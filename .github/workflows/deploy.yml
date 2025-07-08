@@ -2,36 +2,23 @@ name: Deploy to Fly.io
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   deploy:
-    name: Pull schema, build, and deploy
+    name: Deploy app
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout source
         uses: actions/checkout@v3
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Prisma generate
-        run: npx prisma generate
-
-      - name: Prisma DB Pull
-        run: npx prisma db pull
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          PGBOUNCER_DISABLE_PREPARE: "true"
+      - name: Install Fly CLI
+        uses: superfly/flyctl-actions/setup-flyctl@master
 
       - name: Deploy to Fly.io
-        uses: superfly/flyctl-actions@1.4
-        with:
-          args: "deploy --remote-only"
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          flyctl deploy --remote-only
