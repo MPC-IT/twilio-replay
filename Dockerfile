@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM ghcr.io/railwayapp/nixpacks:node-18-alpine
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
