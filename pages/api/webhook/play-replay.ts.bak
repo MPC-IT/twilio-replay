@@ -1,0 +1,38 @@
+// pages/api/webhook/play-replay.ts
+import { NextApiRequest, NextApiResponse } from 'next';
+import { twiml } from 'twilio';
+import { prisma } from '@/lib/prisma';
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const VoiceResponse = twiml.VoiceResponse;
+  const response = new VoiceResponse();
+
+  const code = req.body?.Digits || req.query?.Digits;
+
+  if (!code) {
+    response.say('We were unable to find your replay. Goodbye.');
+    response.hangup();
+    res.setHeader('Content-Type', 'text/xml');
+    return res.status(200).send(response.toString());
+  }
+
+  const replay = await prisma.replay.findUnique({
+    where: { codeInt: parseInt(code, 10) },
+    include: { recordings: true },
+  });
+
+  const recording = replay?.recordings?.[0];
+
+  if (!replay || !recording) {
+    response.say('No recording found for the provided replay number. Goodbye.');
+    response.hangup();
+  } else {
+    response.say('Your replay will now begin.');
+    response.play(recording.audioUrl);
+    response.say('This concludes your conference replay. Goodbye.');
+    response.hangup();
+  }
+
+  res.setHeader('Content-Type', 'text/xml');
+  res.status(200).send(response.toString());
+}

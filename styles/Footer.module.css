@@ -1,0 +1,27 @@
+.footer {
+  background-color: #242a78;
+  color: white;
+  padding: 1rem 2rem;
+  font-size: 0.9rem;
+  font-family: Tahoma, sans-serif;
+}
+ 
+.footerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+ 
+.footerLink {
+  color: #9db6ff;
+  text-decoration: underline;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+ 
+.footerLink:hover,
+.footerLink:focus {
+  color: #c7d7ff;
+}

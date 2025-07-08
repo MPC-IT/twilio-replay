@@ -1,0 +1,64 @@
+.container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  font-family: Arial, sans-serif;
+}
+
+.heading {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #242a78;
+}
+
+.label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  margin-top: 0.25rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.promptRow {
+  margin-top: 1rem;
+}
+
+.audioPlayer {
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.saveButton {
+  margin-top: 2rem;
+  background-color: #242a78;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.saveButton:hover {
+  background-color: #1b2060;
+}
+
+.subheading {
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  color: #444;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+}

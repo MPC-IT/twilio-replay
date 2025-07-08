@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+
+model User {
+  id           String   @id @default(uuid())
+  name         String?
+  email        String   @unique
+  password     String
+  role         String   @default("user")
+  isAdmin      Boolean  @default(false)
+  isSuspended  Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  replays      Replay[]
+}
+
+model Replay {
+  id          String   @id @default(uuid())
+  code        String   @unique
+  codeInt     Int      @unique     // ✅ Keep this required
+  title       String
+  startTime   DateTime
+  endTime     DateTime
+  notes       String?
+  createdBy   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  recordings  Recording[]
+  usages      Usage[]
+
+  user        User     @relation(fields: [createdBy], references: [id])
+}
+
+model Recording {
+  id        String   @id @default(uuid())
+  replayId  String
+  label     String
+  url       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  replay    Replay   @relation(fields: [replayId], references: [id])
+}
+
+model Usage {
+  id                     String   @id @default(uuid())
+  replayId               String
+  callerId               String   // ✅ Added this field
+  durationSeconds        Int
+  firstNameRecordingUrl  String?
+  lastNameRecordingUrl   String?
+  companyRecordingUrl    String?
+  phoneRecordingUrl      String?
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  replay                 Replay   @relation(fields: [replayId], references: [id])
+}
