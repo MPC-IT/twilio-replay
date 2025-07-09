@@ -1,9 +1,9 @@
 // pages/replays/index.tsx
 import { GetServerSideProps } from 'next';
 import { prisma } from '@/lib/prisma';
-import type { ReplayGetPayload } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 
-type ReplayWithUsages = ReplayGetPayload<{
+type ReplayWithUsages = Prisma.ReplayGetPayload<{
   include: { usages: true };
 }>;
 
