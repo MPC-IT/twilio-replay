@@ -1,28 +1,31 @@
-import type { GetServerSideProps } from 'next'
-import { prisma } from '@/lib/prisma'
-import { Prisma } from '@prisma/client'
+import { GetServerSideProps } from 'next';
+import { prisma } from '@/lib/prisma';
+import type { Replay, Usage } from '@prisma/client';
 
-const replayWithUsages = Prisma.validator<Prisma.ReplayDefaultArgs>()({
-  include: {
-    usages: true,
-  },
-})
-
-type ReplayWithUsages = Prisma.ReplayGetPayload<typeof replayWithUsages>
+type ReplayWithUsages = Replay & {
+  usages: Usage[];
+};
 
 interface Props {
-  replays: ReplayWithUsages[]
+  replays: ReplayWithUsages[];
 }
 
 export default function ReplayListPage({ replays }: Props) {
   return (
     <div>
-      <h1>📞 Conference Replays</h1>
+      <h1>🎧 Conference Replays</h1>
       {replays.map((replay) => {
-        const usage = replay.usages[0] // show first usage
+        const usage = replay.usages[0]; // show first usage, or loop all if needed
 
         return (
-          <div key={replay.id} style={{ border: '1px solid #ccc', padding: '1rem', marginBottom: '1rem' }}>
+          <div
+            key={replay.id}
+            style={{
+              border: '1px solid #ccc',
+              padding: '1rem',
+              marginBottom: '1rem',
+            }}
+          >
             <h2>Replay #{replay.codeInt}: {replay.title}</h2>
             <p><strong>Start:</strong> {new Date(replay.startTime).toLocaleString()}</p>
             <p><strong>End:</strong> {new Date(replay.endTime).toLocaleString()}</p>
@@ -30,16 +33,16 @@ export default function ReplayListPage({ replays }: Props) {
             {usage && (
               <p>
                 <strong>First Name Recording:</strong>{' '}
-                <a href={usage.firstNameRecordingUrl || '#'} target="_blank" rel="noreferrer">
-                  Play
+                <a href={usage.firstNameRecordingUrl || '#'} target="_blank" rel="noopener noreferrer">
+                  {usage.firstNameRecordingUrl || 'Unavailable'}
                 </a>
               </p>
             )}
           </div>
-        )
+        );
       })}
     </div>
-  )
+  );
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
@@ -47,11 +50,14 @@ export const getServerSideProps: GetServerSideProps = async () => {
     include: {
       usages: true,
     },
-  })
+    orderBy: {
+      startTime: 'desc',
+    },
+  });
 
   return {
     props: {
       replays,
     },
-  }
-}
+  };
+};
