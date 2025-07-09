@@ -3,13 +3,12 @@ generator client {
 }
 
 datasource db {
-  provider     = "postgresql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id           String   @id @default(uuid())
+  id           String   @id
   name         String?
   email        String   @unique
   password     String
@@ -17,64 +16,63 @@ model User {
   isAdmin      Boolean  @default(false)
   isSuspended  Boolean  @default(false)
   createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  updatedAt    DateTime
 
-  replays      Replay[]
+  replays      Replay[] @relation("UserReplays")
 }
 
 model Replay {
-  id          String    @id @default(uuid())
-  code        String    @unique
-  codeInt     Int       @unique
-  title       String
-  startTime   DateTime
-  endTime     DateTime
-  notes       String?
-  createdBy   String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id         String     @id
+  code       String
+  codeInt    Int
+  replayId   Int
+  title      String
+  startTime  DateTime
+  endTime    DateTime
+  notes      String?
+  createdBy  String
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime
 
-  recordings  Recording[]
-  usages      Usage[]
-  prompts     Prompt[]     // ✅ New relation
-
-  user        User      @relation(fields: [createdBy], references: [id])
+  creator    User       @relation(fields: [createdBy], references: [id], name: "UserReplays")
+  recordings Recording[]
+  prompts    Prompt[]
+  usage      Usage[]
 }
 
 model Recording {
-  id        String   @id @default(uuid())
-  replayId  String
-  label     String
-  url       String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String   @id
+  replayId   Int
+  label      String
+  url        String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime
 
-  replay    Replay   @relation(fields: [replayId], references: [id])
-}
-
-model Usage {
-  id                     String   @id @default(uuid())
-  replayId               String
-  callerId               String
-  durationSeconds        Int
-  firstNameRecordingUrl  String?
-  lastNameRecordingUrl   String?
-  companyRecordingUrl    String?
-  phoneRecordingUrl      String?
-  createdAt              DateTime @default(now())
-  updatedAt              DateTime @updatedAt
-
-  replay                 Replay   @relation(fields: [replayId], references: [id])
+  replay     Replay   @relation(fields: [replayId], references: [replayId])
 }
 
 model Prompt {
-  id        String   @id @default(uuid())
-  replayId  String
-  type      String
-  audioUrl  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String   @id
+  replayId   Int
+  type       String
+  audioUrl   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime
 
-  replay    Replay   @relation(fields: [replayId], references: [id])
+  replay     Replay   @relation(fields: [replayId], references: [replayId])
 }
 
+model Usage {
+  id                    String   @id
+  replayId              Int
+  callerId              String
+  durationSeconds       Int
+  firstNameRecordingUrl String?
+  lastNameRecordingUrl  String?
+  companyRecordingUrl   String?
+  phoneRecordingUrl     String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime
+
+  replay                Replay   @relation(fields: [replayId], references: [replayId])
+}
