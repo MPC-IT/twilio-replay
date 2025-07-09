@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app';
 import { SessionProvider } from 'next-auth/react';
 import Layout from '@/components/Layout';
 import { Toaster } from 'react-hot-toast';
+import { supabase } from '@/utils/supabase'; // ✅ Your Supabase client (safe to import)
 
 export default function App({
   Component,
@@ -13,9 +14,9 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <Layout pageTitle={pageTitle}>
-	<Component {...pageProps} />
-	<Toaster position="top-right" reverseOrder={false} />
-        </Layout>
+        <Component {...pageProps} />
+        <Toaster position="top-right" reverseOrder={false} />
+      </Layout>
     </SessionProvider>
   );
 }

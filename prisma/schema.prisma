@@ -8,7 +8,6 @@ datasource db {
   relationMode = "prisma"
 }
 
-
 model User {
   id           String   @id @default(uuid())
   name         String?
@@ -24,21 +23,22 @@ model User {
 }
 
 model Replay {
-  id          String   @id @default(uuid())
-  code        String   @unique
-  codeInt     Int      @unique     // ✅ Keep this required
+  id          String    @id @default(uuid())
+  code        String    @unique
+  codeInt     Int       @unique
   title       String
   startTime   DateTime
   endTime     DateTime
   notes       String?
   createdBy   String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   recordings  Recording[]
   usages      Usage[]
+  prompts     Prompt[]     // ✅ New relation
 
-  user        User     @relation(fields: [createdBy], references: [id])
+  user        User      @relation(fields: [createdBy], references: [id])
 }
 
 model Recording {
@@ -55,7 +55,7 @@ model Recording {
 model Usage {
   id                     String   @id @default(uuid())
   replayId               String
-  callerId               String   // ✅ Added this field
+  callerId               String
   durationSeconds        Int
   firstNameRecordingUrl  String?
   lastNameRecordingUrl   String?
@@ -66,3 +66,15 @@ model Usage {
 
   replay                 Replay   @relation(fields: [replayId], references: [id])
 }
+
+model Prompt {
+  id        String   @id @default(uuid())
+  replayId  String
+  type      String
+  audioUrl  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  replay    Replay   @relation(fields: [replayId], references: [id])
+}
+
