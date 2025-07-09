@@ -28,7 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Convert prompts array into a key-value map
     const promptMap: Record<string, string> = {}
-    replay.prompts?.forEach((prompt) => {
+    replay.prompts?.forEach((prompt: { type: string; audioUrl: string }) => {
       promptMap[prompt.type] = prompt.audioUrl
     })
 
