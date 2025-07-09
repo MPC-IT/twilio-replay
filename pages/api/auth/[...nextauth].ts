@@ -39,7 +39,7 @@ export const authOptions: AuthOptions = {
         return {
           id: user.id,
           email: user.email,
-          name: user.fullName || '',
+          name: user.name || '', // ✅ FIXED: replaced fullName with name
           isAdmin: user.isAdmin,
           isSuspended: user.isSuspended,
         };
