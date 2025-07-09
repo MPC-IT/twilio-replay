@@ -11,7 +11,11 @@ RUN npm install --frozen-lockfile
 # Copy remaining app source
 COPY . .
 
+# Copy Prisma schema and related files
+COPY prisma ./prisma
+
 # Build the Next.js app
+RUN npx prisma generate
 RUN npm run build
 
 # --- Runtime Image ---
