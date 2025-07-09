@@ -11,7 +11,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (!digits || !callerId || !recordingUrl) {
     voiceResponse.say('Missing information. Ending the call.');
-    res.type('text/xml').send(voiceResponse.toString());
+    res.setHeader('Content-Type', 'text/xml');
+    res.status(200).send(voiceResponse.toString());
     return;
   }
 
@@ -21,11 +22,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (!replay) {
     voiceResponse.say('Replay not found.');
-    res.type('text/xml').send(voiceResponse.toString());
+    res.setHeader('Content-Type', 'text/xml');
+    res.status(200).send(voiceResponse.toString());
     return;
   }
 
-  // Update or create usage with last name recording
   await prisma.usage.upsert({
     where: {
       replayId_callerId: {
@@ -44,8 +45,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     },
   });
 
-  // Prompt for company name
-  voiceResponse.say('Thank you. Please say your company name after the beep. Then press the pound sign.');
+  voiceResponse.say('Thank you. Please say your phone number after the beep. Then press the pound sign.');
 
   voiceResponse.record({
     action: `/api/webhook/record-phone?Digits=${digits}&callerId=${encodeURIComponent(callerId)}`,
@@ -55,5 +55,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     trim: 'trim-silence',
   });
 
-  res.type('text/xml').send(voiceResponse.toString());
+  res.setHeader('Content-Type', 'text/xml');
+  res.status(200).send(voiceResponse.toString());
 }

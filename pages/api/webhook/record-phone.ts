@@ -11,7 +11,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (!digits || !callerId || !recordingUrl) {
     voiceResponse.say('Missing information. Ending the call.');
-    res.type('text/xml').send(voiceResponse.toString());
+    res.setHeader('Content-Type', 'text/xml');
+    res.status(200).send(voiceResponse.toString());
     return;
   }
 
@@ -21,11 +22,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (!replay) {
     voiceResponse.say('Replay not found.');
-    res.type('text/xml').send(voiceResponse.toString());
+    res.setHeader('Content-Type', 'text/xml');
+    res.status(200).send(voiceResponse.toString());
     return;
   }
 
-  // Final update to the Usage record with phone number
   await prisma.usage.upsert({
     where: {
       replayId_callerId: {
@@ -44,9 +45,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     },
   });
 
-  // Playback the main conference recording
   voiceResponse.say('Thank you. Please hold while we play the recording.');
   voiceResponse.redirect(`/api/webhook/play-replay?Digits=${digits}`);
 
-  res.type('text/xml').send(voiceResponse.toString());
+  res.setHeader('Content-Type', 'text/xml');
+  res.status(200).send(voiceResponse.toString());
 }

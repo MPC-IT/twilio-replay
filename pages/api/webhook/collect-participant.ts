@@ -8,10 +8,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const callerId = req.query.callerId as string;
 
   if (!digits) {
-    voiceResponse.say('Missing replay code. Returning to main menu.');
-    voiceResponse.redirect('/api/webhook/start-replay');
-    res.type('text/xml').send(voiceResponse.toString());
-    return;
+     voiceResponse.say('Missing replay code. Returning to main menu.');
+     voiceResponse.redirect('/api/webhook/start-replay');
+     res.setHeader('Content-Type', 'text/xml');
+     res.status(200).send(voiceResponse.toString());
+     return;
   }
 
   // Start the participant info collection flow with First Name
@@ -25,5 +26,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     trim: 'trim-silence',
   });
 
-  res.type('text/xml').send(voiceResponse.toString());
+  res.setHeader('Content-Type', 'text/xml');
+  res.status(200).send(voiceResponse.toString());
 }

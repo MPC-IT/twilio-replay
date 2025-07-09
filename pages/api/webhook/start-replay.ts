@@ -13,7 +13,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!digits || isNaN(parseInt(digits))) {
       voiceResponse.say('Invalid input. Please enter a numeric replay ID followed by the pound sign.');
       voiceResponse.redirect('/api/webhook/start-replay');
-      res.type('text/xml').send(voiceResponse.toString());
+      res.setHeader('Content-Type', 'text/xml');
+      res.status(200).send(voiceResponse.toString());
       return;
     }
 
@@ -24,13 +25,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!replay) {
       voiceResponse.say('Replay not found. Please check your code and try again.');
       voiceResponse.redirect('/api/webhook/start-replay');
-      res.type('text/xml').send(voiceResponse.toString());
+      res.setHeader('Content-Type', 'text/xml');
+      res.status(200).send(voiceResponse.toString());
       return;
     }
 
     // Replay found — pass code and caller ID to next step
     voiceResponse.redirect(`/api/webhook/collect-participant?Digits=${digits}&callerId=${encodeURIComponent(callerId)}`);
-    res.type('text/xml').send(voiceResponse.toString());
+    res.setHeader('Content-Type', 'text/xml');
+    res.status(200).send(voiceResponse.toString());
   } else {
     // Initial prompt for replay code
     const gather = voiceResponse.gather({
@@ -41,6 +44,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
 
     gather.say('Welcome to the replay system. Please enter your replay pin followed by the pound sign.');
-    res.type('text/xml').send(voiceResponse.toString());
+    res.setHeader('Content-Type', 'text/xml');
+    res.status(200).send(voiceResponse.toString());
   }
 }

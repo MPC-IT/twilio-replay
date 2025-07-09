@@ -10,7 +10,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (!replayId || typeof replayId !== 'string') {
     response.say('Missing replay ID. Goodbye.');
-    res.type('text/xml').send(response.toString());
+    res.setHeader('Content-Type', 'text/xml');
+    res.status(200).send(response.toString());
     return;
   }
 
@@ -23,7 +24,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (!RecordingUrl || !RecordingSid) {
     response.say('Recording failed or was not received. Goodbye.');
-    res.type('text/xml').send(response.toString());
+    res.setHeader('Content-Type', 'text/xml');
+    res.status(200).send(response.toString());
     return;
   }
 
@@ -38,10 +40,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
 
     response.say('Recording saved successfully. Goodbye.');
-    res.type('text/xml').send(response.toString());
+    res.setHeader('Content-Type', 'text/xml');
+    res.status(200).send(response.toString());
   } catch (error) {
     console.error('❌ Failed to save recording:', error);
     response.say('There was a problem saving your recording. Goodbye.');
-    res.type('text/xml').send(response.toString());
+    res.setHeader('Content-Type', 'text/xml');
+    res.status(200).send(response.toString());
   }
 }

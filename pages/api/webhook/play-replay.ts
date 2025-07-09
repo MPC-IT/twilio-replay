@@ -1,3 +1,4 @@
+// pages/api/webhook/play-replay.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '@/lib/prisma';
 import { twiml } from 'twilio';
@@ -9,7 +10,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (!digits || isNaN(parseInt(digits))) {
     voiceResponse.say('Invalid input. Ending the call.');
-    res.type('text/xml').send(voiceResponse.toString());
+    res.setHeader('Content-Type', 'text/xml');
+    res.status(200).send(voiceResponse.toString());
     return;
   }
 
@@ -20,7 +22,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (!replay || replay.recordings.length === 0) {
     voiceResponse.say('No conference recording is available at this time.');
-    res.type('text/xml').send(voiceResponse.toString());
+    res.setHeader('Content-Type', 'text/xml');
+    res.status(200).send(voiceResponse.toString());
     return;
   }
 
@@ -33,5 +36,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   voiceResponse.say('Thank you for listening. Goodbye.');
   voiceResponse.hangup();
 
-  res.type('text/xml').send(voiceResponse.toString());
+  res.setHeader('Content-Type', 'text/xml');
+  res.status(200).send(voiceResponse.toString());
 }

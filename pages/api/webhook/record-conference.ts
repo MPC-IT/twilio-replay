@@ -6,7 +6,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const voiceResponse = new twiml.VoiceResponse();
 
   if (req.method !== 'POST') {
-    // Prompt for a 5-digit Replay ID
     const gather = voiceResponse.gather({
       numDigits: 5,
       action: '/api/webhook/create-replay',
@@ -15,7 +14,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
 
     gather.say('Please enter your five digit replay code, followed by the pound sign.');
-    res.type('text/xml').send(voiceResponse.toString());
+    res.setHeader('Content-Type', 'text/xml');
+    res.status(200).send(voiceResponse.toString());
     return;
   }
 
@@ -24,7 +24,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!digits || isNaN(parseInt(digits))) {
     voiceResponse.say('Invalid replay code. Please try again.');
     voiceResponse.redirect('/api/webhook/create-replay');
-    res.type('text/xml').send(voiceResponse.toString());
+    res.setHeader('Content-Type', 'text/xml');
+    res.status(200).send(voiceResponse.toString());
     return;
   }
 
@@ -35,13 +36,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!replay) {
     voiceResponse.say('Replay not found. Please check your code and try again.');
     voiceResponse.redirect('/api/webhook/create-replay');
-    res.type('text/xml').send(voiceResponse.toString());
+    res.setHeader('Content-Type', 'text/xml');
+    res.status(200).send(voiceResponse.toString());
     return;
   }
 
-  // Valid Replay code entered
   voiceResponse.say('Thank you. Your conference is now being recorded.');
   voiceResponse.redirect(`/api/webhook/record-conference?replayId=${replay.id}`);
 
-  res.type('text/xml').send(voiceResponse.toString());
+  res.setHeader('Content-Type', 'text/xml');
+  res.status(200).send(voiceResponse.toString());
 }

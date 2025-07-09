@@ -21,15 +21,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
   }
 
+  const response = new twiml.VoiceResponse();
+
   // All done
   if (stepIndex >= steps.length) {
-    const response = new twiml.VoiceResponse();
     response.say('Thank you. Your information has been recorded. The replay will begin shortly.');
-    return res.status(200).type('text/xml').send(response.toString());
+    res.setHeader('Content-Type', 'text/xml');
+    res.status(200).send(response.toString());
+    return;
   }
 
   // Prompt for next info
-  const response = new twiml.VoiceResponse();
   response.say(`Please state your ${steps[stepIndex]}. Press any key when done.`);
   response.record({
     action: `/api/webhook/record-prompt?replayCode=${replayCode}&step=${steps[stepIndex + 1]}`,
@@ -38,7 +40,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     maxLength: 10,
   });
 
-  return res.status(200).type('text/xml').send(response.toString());
+  res.setHeader('Content-Type', 'text/xml');
+  res.status(200).send(response.toString());
 }
 
 function capitalize(word: string) {
