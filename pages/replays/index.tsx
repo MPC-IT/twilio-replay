@@ -1,15 +1,14 @@
 // pages/replays/index.tsx
-import { useEffect, useState } from 'react';
-import type { GetServerSideProps } from 'next';
-import type { Replay, Usage } from '@prisma/client';
+import { GetServerSideProps } from 'next';
 import { prisma } from '@/lib/prisma';
+import { Prisma } from '@prisma/client';
 
-type ReplayWithUsage = Replay & {
-  usages: Usage[];
-};
+type ReplayWithUsages = Prisma.ReplayGetPayload<{
+  include: { usages: true };
+}>;
 
 interface Props {
-  replays: ReplayWithUsage[];
+  replays: ReplayWithUsages[];
 }
 
 export default function ReplayListPage({ replays }: Props) {
@@ -17,7 +16,7 @@ export default function ReplayListPage({ replays }: Props) {
     <div>
       <h1>Conference Replays</h1>
       {replays.map((replay) => {
-        const usage = replay.usages[0]; // You can extend this to loop over all usages if needed
+        const usage = replay.usages[0]; // show first usage, or loop all if needed
 
         return (
           <div key={replay.id} style={{ border: '1px solid #ccc', padding: '1rem', marginBottom: '1rem' }}>
@@ -39,7 +38,6 @@ export default function ReplayListPage({ replays }: Props) {
   );
 }
 
-// Fetch data on the server and pass to the component as props
 export const getServerSideProps: GetServerSideProps = async () => {
   const replays = await prisma.replay.findMany({
     orderBy: { createdAt: 'desc' },
@@ -50,7 +48,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
   return {
     props: {
-      replays: JSON.parse(JSON.stringify(replays)), // serialize Date fields
+      replays: JSON.parse(JSON.stringify(replays)),
     },
   };
 };
