@@ -1,3 +1,4 @@
+// pages/replays/[replayId]/index.tsx
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from '@/styles/ReplayDetail.module.css';
@@ -66,6 +67,32 @@ export default function ReplayEditor() {
     }
   };
 
+  const handleAudioUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || !replay || typeof replayId !== 'string') return;
+
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('replayId', replayId);
+
+    try {
+      const res = await fetch('/api/replays/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      if (res.ok && data.audioUrl) {
+        setReplay({ ...replay, audioUrl: data.audioUrl });
+        alert('Replay uploaded successfully!');
+      } else {
+        alert(data.message || 'Upload failed.');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('An error occurred while uploading.');
+    }
+  };
+
   if (!replay) return <p style={{ padding: '2rem' }}>{error || 'Loading replay...'}</p>;
 
   return (
@@ -116,6 +143,8 @@ export default function ReplayEditor() {
       ) : (
         <p>No audio uploaded yet.</p>
       )}
+
+      <input type="file" accept="audio/*" onChange={handleAudioUpload} className={styles.uploadInput} />
 
       {error && <p className={styles.error}>{error}</p>}
       <button onClick={handleSave} disabled={saving}>
