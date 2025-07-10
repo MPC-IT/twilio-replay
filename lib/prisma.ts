@@ -1,9 +1,13 @@
 // lib/prisma.ts
 import { PrismaClient } from '@prisma/client'
 
-// Prevent multiple instances of Prisma Client in development
 declare global {
   var prisma: PrismaClient | undefined
+}
+
+// Add this logging
+if (!global.prisma) {
+  console.log('Creating new PrismaClient instance')
 }
 
 const prisma = global.prisma || new PrismaClient()
