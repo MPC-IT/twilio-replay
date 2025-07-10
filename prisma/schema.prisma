@@ -1,13 +1,17 @@
+-- This is a sample schema.prisma file with optimized connection settings
+-- Save this as schema.prisma in your project root
+
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider     = "postgresql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
+// Your models go here
 model User {
   id          String   @id
   name        String?
@@ -18,15 +22,16 @@ model User {
   isSuspended Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-
   replays     Replay[]
+
+  @@map("User")
 }
 
 model Replay {
   id        String   @id
-  code      String   @unique
-  codeInt   Int      @unique
-  replayId  Int      @unique
+  code      String
+  codeInt   Int
+  replayId  Int
   title     String
   startTime DateTime
   endTime   DateTime
@@ -34,47 +39,44 @@ model Replay {
   createdBy String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
   user      User     @relation(fields: [createdBy], references: [id])
 
-  recordings Recording[]
-  prompts    Prompt[]
-  usages     Usage[]
+  @@map("Replay")
 }
 
 model Recording {
-  id        String   @id @default(uuid())
+  id        String   @id
   replayId  Int
   label     String
   url       String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  replay    Replay   @relation(fields: [replayId], references: [replayId])
+  @@map("Recording")
 }
 
 model Prompt {
-  id        String   @id @default(uuid())
+  id        String   @id
   replayId  Int
   type      String
   audioUrl  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  replay    Replay   @relation(fields: [replayId], references: [replayId])
+  @@map("Prompt")
 }
 
 model Usage {
-  id                     String   @id @default(uuid())
-  replayId               Int
-  callerId               String
-  durationSeconds        Int
-  firstNameRecordingUrl  String?
-  lastNameRecordingUrl   String?
-  companyRecordingUrl    String?
-  phoneRecordingUrl      String?
-  createdAt              DateTime @default(now())
-  updatedAt              DateTime @updatedAt
+  id                   String   @id
+  replayId             Int
+  callerId             String
+  durationSeconds      Int
+  firstNameRecordingUrl String?
+  lastNameRecordingUrl  String?
+  companyRecordingUrl   String?
+  phoneRecordingUrl     String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
 
-  replay                 Replay   @relation(fields: [replayId], references: [replayId])
+  @@map("Usage")
 }
