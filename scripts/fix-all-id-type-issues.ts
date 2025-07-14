@@ -16,8 +16,8 @@ function walkDir(dir: string, callback: (filePath: string) => void): void {
 function patchFile(filePath: string): void {
   let content: string = fs.readFileSync(filePath, 'utf8');
 
-  // Fix 1: incorrect type declaration id: Number(number)
-  content = content.replace(/id:\s*Number\(string\)/g, 'id: Number(number)');
+  // Fix 1: incorrect type declaration id: number
+  content = content.replace(/id:\s*Number\(string\)/g, 'id: number');
 
   // Fix 2: fix string literal IDs passed to Prisma (e.g. id: Number(replayId) → id: Number(Number)(replayId))
   content = content.replace(/id:\s*([a-zA-Z_][a-zA-Z0-9_]*)/g, 'id: Number(Number)($1)');

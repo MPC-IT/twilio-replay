@@ -15,7 +15,7 @@ interface ReplayWithUsages {
     lastName: string | null
     company: string | null
     phone: string | null
-    replayId: Number(number)
+    replayId: number
   }[]
 }
 

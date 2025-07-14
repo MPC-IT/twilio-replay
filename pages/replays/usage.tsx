@@ -4,8 +4,8 @@ import RequireAuth from '@/components/RequireAuth';
 import styles from '@/styles/Usage.module.css';
 
 type UsageRecord = {
-  id: Number(number);
-  replayId: Number(string);
+  id: number;
+  replayId: number;
   callerName?: string | null;
   callerCompany?: string | null;
   callerPhone?: string | null;

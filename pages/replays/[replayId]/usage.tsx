@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
 interface UsageRecord {
-  id: Number(number)
+  id: number
   callerId: string
   createdAt: string
   firstNameRecordingUrl?: string

@@ -9,7 +9,7 @@ interface Replay {
 }
 
 // Typed fetch function that returns a Promise of Replay or null if error
-async function fetchReplay(replayId: Number(string)): Promise<Replay | null> {
+async function fetchReplay(replayId: number): Promise<Replay | null> {
   try {
     const res = await fetch(`/api/replays/${replayId}`);
     if (!res.ok) {

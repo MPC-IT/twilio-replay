@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export default function ReplayPromptsForm({ replayId }: { replayId: Number(string) }) {
+export default function ReplayPromptsForm({ replayId }: { replayId: number }) {
   const [file, setFile] = useState<File | null>(null);
   const [promptText, setPromptText] = useState({
     firstName: '',

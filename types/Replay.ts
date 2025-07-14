@@ -1,6 +1,6 @@
 // types/Replay.ts
 export type Replay = {
-  id: Number(number);
+  id: number;
   replayCode: string;
   company: string;
   startTime: string;
