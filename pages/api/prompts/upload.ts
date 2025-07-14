@@ -4,7 +4,7 @@ import formidable from 'formidable';
 import fs from 'fs';
 import path from 'path';
 import { prisma } from '@/lib/prisma';
-import { randomUUID } from 'crypto'; // ✅ Ensure this is imported
+import { randomUUID } from 'crypto';
 
 export const config = {
   api: {
@@ -14,10 +14,14 @@ export const config = {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req });
-  if (!session) return res.status(401).json({ message: 'Unauthorized' });
+  if (!session) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
 
   const uploadDir = path.join(process.cwd(), 'public', 'prompts');
-  if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+  }
 
   const form = new formidable.IncomingForm({ uploadDir, keepExtensions: true });
 
@@ -25,14 +29,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (err) return res.status(500).json({ error: 'Form parsing failed' });
 
     const { type, replayId } = fields;
-    const file = files.file?.[0];
+    const file = Array.isArray(files.file) ? files.file[0] : files.file;
 
     if (!type || !replayId || !file) {
       return res.status(400).json({ error: 'Missing type, replayId, or file' });
     }
 
-    const promptType = type.toString();
-    const replayIdNum = parseInt(replayId.toString(), 10);
+    const promptType = String(type);
+    const replayIdNum = Number(replayId);
+    if (isNaN(replayIdNum)) {
+      return res.status(400).json({ error: 'Invalid replayId' });
+    }
+
     const filename = `${replayIdNum}_${promptType}.mp3`;
     const newPath = path.join(uploadDir, filename);
 
@@ -40,12 +48,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       fs.renameSync(file.filepath, newPath);
 
       const existingPrompt = await prisma.prompt.findFirst({
-        where: { replayId: Number(replayIdNum), type: promptType },
+        where: { replayId: replayIdNum, type: promptType },
       });
 
       if (existingPrompt) {
         await prisma.prompt.update({
-          where: { id: Number(Number)(existingPrompt).id },
+          where: { id: existingPrompt.id },
           data: {
             audioUrl: `/prompts/${filename}`,
           },
@@ -53,7 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       } else {
         await prisma.prompt.create({
           data: {
-            replayId: Number(replayIdNum),
+            replayId: replayIdNum,
             type: promptType,
             audioUrl: `/prompts/${filename}`,
           },
