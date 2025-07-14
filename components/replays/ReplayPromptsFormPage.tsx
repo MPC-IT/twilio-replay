@@ -12,7 +12,7 @@ export default function ReplayPromptsFormPage() {
   return (
     <main style={{ padding: '2rem' }}>
       <h1>Manage Replay Prompts</h1>
-      <ReplayPromptsForm replayId={replayId} />
+      <ReplayPromptsForm replayId={Number(replayId)} />
     </main>
   );
 }
