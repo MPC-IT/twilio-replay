@@ -53,7 +53,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       } else {
         await prisma.prompt.create({
           data: {
-            id: randomUUID(), // ✅ Manually generating required `id`
             replayId: replayIdNum,
             type: promptType,
             audioUrl: `/prompts/${filename}`,
