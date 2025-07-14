@@ -4,6 +4,7 @@ import formidable from 'formidable';
 import fs from 'fs';
 import path from 'path';
 import { prisma } from '@/lib/prisma';
+import { randomUUID } from 'crypto'; // ✅ Ensure this is imported
 
 export const config = {
   api: {
@@ -16,15 +17,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!session) return res.status(401).json({ message: 'Unauthorized' });
 
   const uploadDir = path.join(process.cwd(), 'public', 'prompts');
+  if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
 
-  if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-  }
-
-  const form = new formidable.IncomingForm({
-    uploadDir,
-    keepExtensions: true,
-  });
+  const form = new formidable.IncomingForm({ uploadDir, keepExtensions: true });
 
   form.parse(req, async (err, fields, files) => {
     if (err) return res.status(500).json({ error: 'Form parsing failed' });
@@ -37,35 +32,39 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const promptType = type.toString();
-    const replayIdStr = replayId.toString();
-    const filename = `${replayIdStr}_${promptType}.mp3`;
+    const replayIdNum = parseInt(replayId.toString(), 10);
+    const filename = `${replayIdNum}_${promptType}.mp3`;
     const newPath = path.join(uploadDir, filename);
 
     try {
       fs.renameSync(file.filepath, newPath);
 
-      // Upsert prompt: update if exists, otherwise create
-      await prisma.prompt.upsert({
-        where: {
-          replayId_type: {
-            replayId: replayIdStr,
-            type: promptType,
-          },
-        },
-        update: {
-          audioUrl: `/prompts/${filename}`,
-        },
-        create: {
-          replayId: replayIdStr,
-          type: promptType,
-          audioUrl: `/prompts/${filename}`,
-        },
+      const existingPrompt = await prisma.prompt.findFirst({
+        where: { replayId: replayIdNum, type: promptType },
       });
+
+      if (existingPrompt) {
+        await prisma.prompt.update({
+          where: { id: existingPrompt.id },
+          data: {
+            audioUrl: `/prompts/${filename}`,
+          },
+        });
+      } else {
+        await prisma.prompt.create({
+          data: {
+            id: randomUUID(), // ✅ Manually generating required `id`
+            replayId: replayIdNum,
+            type: promptType,
+            audioUrl: `/prompts/${filename}`,
+          },
+        });
+      }
 
       return res.status(200).json({ message: 'Prompt uploaded', path: `/prompts/${filename}` });
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ error: 'Failed to save file or update prompt' });
+      return res.status(500).json({ error: 'Failed to save or update prompt' });
     }
   });
 }

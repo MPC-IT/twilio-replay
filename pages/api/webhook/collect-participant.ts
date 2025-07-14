@@ -1,31 +1,38 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { twiml } from 'twilio';
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  const voiceResponse = new twiml.VoiceResponse();
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
-  const digits = req.query.Digits as string;
-  const callerId = req.query.callerId as string;
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const { Digits, callerId } = req.query;
 
-  if (!digits) {
-     voiceResponse.say('Missing replay code. Returning to main menu.');
-     voiceResponse.redirect('/api/webhook/start-replay');
-     res.setHeader('Content-Type', 'text/xml');
-     res.status(200).send(voiceResponse.toString());
-     return;
+  const replayId = Digits || req.body.Digits;
+  const caller = callerId || req.body.From;
+
+  const response = new twiml.VoiceResponse();
+
+  if (!replayId || !caller) {
+    response.say('Missing replay information. Goodbye.');
+    response.hangup();
+    res.setHeader('Content-Type', 'text/xml');
+    return res.status(400).send(response.toString());
   }
 
-  // Start the participant info collection flow with First Name
-  voiceResponse.say('Please say your first name after the beep. Then press the pound sign.');
+  response.say('Please say your first name after the beep.');
 
-  voiceResponse.record({
-    action: `/api/webhook/record-last-name?Digits=${digits}&callerId=${encodeURIComponent(callerId)}`,
+  response.record({
+    action: `/api/webhook/record-last-name?replayId=${replayId}&callerId=${encodeURIComponent(caller)}&field=firstNameRecordingUrl`,
     method: 'POST',
-    finishOnKey: '#',
     maxLength: 10,
-    trim: 'trim-silence',
+    timeout: 5,
+    playBeep: true,
+    trim: 'do-not-trim',
   });
 
   res.setHeader('Content-Type', 'text/xml');
-  res.status(200).send(voiceResponse.toString());
+  res.status(200).send(response.toString());
 }

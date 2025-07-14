@@ -1,60 +1,41 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { prisma } from '@/lib/prisma';
 import { twiml } from 'twilio';
 
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const voiceResponse = new twiml.VoiceResponse();
+  const { replayId, callerId } = req.query;
 
-  const digits = req.query.Digits as string;
-  const callerId = req.query.callerId as string;
-  const recordingUrl = req.body.RecordingUrl as string;
+  const response = new twiml.VoiceResponse();
 
-  if (!digits || !callerId || !recordingUrl) {
-    voiceResponse.say('Missing information. Ending the call.');
+  if (!replayId || !callerId) {
+    response.say('Missing replay information. Goodbye.');
+    response.hangup();
     res.setHeader('Content-Type', 'text/xml');
-    res.status(200).send(voiceResponse.toString());
-    return;
+    return res.status(400).send(response.toString());
   }
 
-  const replay = await prisma.replay.findFirst({
-    where: { codeInt: parseInt(digits) },
-  });
+  response.say('Please say your company name after the beep.');
 
-  if (!replay) {
-    voiceResponse.say('Replay not found.');
-    res.setHeader('Content-Type', 'text/xml');
-    res.status(200).send(voiceResponse.toString());
-    return;
-  }
-
-  await prisma.usage.upsert({
-    where: {
-      replayId_callerId: {
-        replayId: replay.id,
-        callerId,
-      },
-    },
-    update: {
-      callerCompany: recordingUrl,
-    },
-    create: {
-      replayId: replay.id,
-      callerId,
-      callerCompany: recordingUrl,
-      durationSeconds: 0,
-    },
-  });
-
-  voiceResponse.say('Thank you. Please say your phone number after the beep. Then press the pound sign.');
-
-  voiceResponse.record({
-    action: `/api/webhook/record-phone?Digits=${digits}&callerId=${encodeURIComponent(callerId)}`,
+  response.record({
+    action: `/api/webhook/store-recording?replayId=${replayId}&callerId=${encodeURIComponent(
+      callerId as string
+    )}&field=companyRecordingUrl`,
     method: 'POST',
-    finishOnKey: '#',
     maxLength: 10,
-    trim: 'trim-silence',
+    timeout: 5,
+    playBeep: true,
+    trim: 'do-not-trim',
+    recordingStatusCallback: `/api/webhook/record-phone?replayId=${replayId}&callerId=${encodeURIComponent(
+      callerId as string
+    )}`,
+    recordingStatusCallbackMethod: 'POST',
   });
 
   res.setHeader('Content-Type', 'text/xml');
-  res.status(200).send(voiceResponse.toString());
+  res.status(200).send(response.toString());
 }

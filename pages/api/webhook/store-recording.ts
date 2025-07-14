@@ -1,73 +1,67 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { prisma } from '@/lib/prisma'
-import { supabase } from '@/utils/supabase'
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { prisma } from '@/lib/prisma';
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') return res.status(405).end()
+  const { RecordingUrl, callerId, replayId, field } = req.body;
+
+  if (!RecordingUrl || !callerId || !replayId || !field) {
+    return res.status(400).send('<Response><Say>Missing data. Goodbye.</Say></Response>');
+  }
+
+  const validFields = [
+    'firstNameRecordingUrl',
+    'lastNameRecordingUrl',
+    'companyRecordingUrl',
+    'phoneRecordingUrl'
+  ];
+
+  if (!validFields.includes(field)) {
+    return res.status(400).send(`<Response><Say>Invalid field ${field}. Goodbye.</Say></Response>`);
+  }
 
   try {
-    const { replayId, callerId, type, recordingUrl } = req.body
-    if (!replayId || !callerId || !type || !recordingUrl) {
-      return res.status(400).json({ message: 'Missing required fields' })
-    }
+    const replayIdNum = parseInt(replayId.toString(), 10);
 
-    const response = await fetch(recordingUrl)
-    const buffer = Buffer.from(await response.arrayBuffer())
-
-    const ext = 'mp3'
-    const filename = `usage/${replayId}/${callerId}_${type}_${Date.now()}.${ext}`
-
-    const { error: uploadError } = await supabase.storage
-      .from('replay-files')
-      .upload(filename, buffer, {
-        contentType: 'audio/mpeg',
-        upsert: true,
-      })
-
-    if (uploadError) {
-      console.error(uploadError)
-      return res.status(500).json({ message: 'Upload to Supabase failed' })
-    }
-
-    const { data: publicUrl } = supabase.storage.from('replay-files').getPublicUrl(filename)
-
-    const columnMap: Record<string, keyof typeof updateData> = {
-      firstName: 'firstNameRecordingUrl',
-      lastName: 'lastNameRecordingUrl',
-      company: 'companyRecordingUrl',
-      phone: 'phoneRecordingUrl',
-    }
-
-    const column = columnMap[type]
-    if (!column) return res.status(400).json({ message: 'Invalid prompt type' })
-
-    const updateData: any = {
-      [column]: publicUrl.publicUrl,
-    }
-
+    // Find existing usage or create it
     const existing = await prisma.usage.findFirst({
-      where: { replayId: parseInt(replayId), callerId },
-    })
+      where: {
+        replayId: replayIdNum,
+        callerId,
+      },
+    });
 
-    if (!existing) {
-      await prisma.usage.create({
-        data: {
-          replayId: parseInt(replayId),
-          callerId,
-          durationSeconds: 0,
-          ...updateData,
-        },
-      })
-    } else {
+    if (existing) {
       await prisma.usage.update({
         where: { id: existing.id },
-        data: updateData,
-      })
+        data: {
+          [field]: RecordingUrl,
+          updatedAt: new Date(),
+        },
+      });
+    } else {
+      await prisma.usage.create({
+        data: {
+          replayId: replayIdNum,
+          callerId,
+          [field]: RecordingUrl,
+          durationSeconds: 0, // Will be updated later
+        },
+      });
     }
 
-    return res.status(200).json({ url: publicUrl.publicUrl })
+    const VoiceResponse = require('twilio').twiml.VoiceResponse;
+    const response = new VoiceResponse();
+    response.say('Thank you.');
+    res.setHeader('Content-Type', 'text/xml');
+    return res.status(200).send(response.toString());
   } catch (err) {
-    console.error(err)
-    return res.status(500).json({ message: 'Internal server error' })
+    console.error(err);
+    return res.status(500).send('<Response><Say>Internal error occurred. Goodbye.</Say></Response>');
   }
 }

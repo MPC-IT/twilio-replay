@@ -65,19 +65,43 @@ export default function UsageReviewPage() {
     }
   }
 
+  const handleDownload = () => {
+    if (replayId) {
+      window.open(`/api/replays/${replayId}/usage/export`, '_blank')
+    }
+  }
+
   return (
     <div style={{ padding: '2rem' }}>
       <h2>Caller Recordings – Replay {replayId}</h2>
+
+      <button onClick={handleDownload} style={{ marginBottom: '1rem' }}>
+        📥 Download Usage CSV
+      </button>
+
       {usage.map((u) => (
-        <div key={u.id} style={{ marginBottom: '2rem', paddingBottom: '1rem', borderBottom: '1px solid #ccc' }}>
-          <p><strong>Caller ID:</strong> {u.callerId}</p>
-          <p><strong>Date:</strong> {new Date(u.createdAt).toLocaleString()}</p>
+        <div
+          key={u.id}
+          style={{
+            marginBottom: '2rem',
+            paddingBottom: '1rem',
+            borderBottom: '1px solid #ccc',
+          }}
+        >
+          <p>
+            <strong>Caller ID:</strong> {u.callerId}
+          </p>
+          <p>
+            <strong>Date:</strong>{' '}
+            {new Date(u.createdAt).toLocaleString()}
+          </p>
 
           {['firstName', 'lastName', 'company', 'phone'].map((field) => {
             const url = u[`${field}RecordingUrl` as keyof UsageRecord] as string
             return url ? (
               <div key={field} style={{ marginBottom: '0.5rem' }}>
-                {field.charAt(0).toUpperCase() + field.slice(1)}: <audio controls src={url} />
+                {field.charAt(0).toUpperCase() + field.slice(1)}:{' '}
+                <audio controls src={url} />
                 <input
                   type="text"
                   placeholder={`Transcribe ${field}`}
