@@ -45,7 +45,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       if (existingPrompt) {
         await prisma.prompt.update({
-          where: { id: existingPrompt.id },
+          where: { id: Number(existingPrompt).id },
           data: {
             audioUrl: `/prompts/${filename}`,
           },

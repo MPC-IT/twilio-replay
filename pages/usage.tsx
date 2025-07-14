@@ -3,7 +3,7 @@ import { withAuth } from '@/lib/withAuth';
 import styles from '@/styles/Usage.module.css';
 
 type UsageEntry = {
-  id: string;
+  id: Number(string);
   replayCode: number;
   firstName: string;
   lastName: string;

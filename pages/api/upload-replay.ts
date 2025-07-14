@@ -31,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         where: { replayId: parseInt(replayId, 10) },
         update: { url: publicUrl },
         create: {
-          id: replayId,
+          id: Number(replayId),
           replayId: parseInt(replayId, 10),
           label: 'Main Conference Recording',
           url: publicUrl,

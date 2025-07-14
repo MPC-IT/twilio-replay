@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "seed": "ts-node --project tsconfig.seed.json prisma/seed.ts",
-    "test": "jest"
+    "test": "jest",
+    "find-deadcode": "ts-prune"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",
@@ -39,6 +40,7 @@
     "eslint": "^9.30.0",
     "prisma": "^6.11.1",
     "ts-node": "^10.9.2",
+    "ts-prune": "^0.10.3",
     "typescript": "^5.8.3"
   }
 }

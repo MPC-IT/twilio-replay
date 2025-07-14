@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 type Recording = {
-  id: string;
+  id: Number(string);
   name?: string | null;
   audioUrl: string;
   transcription?: string | null;

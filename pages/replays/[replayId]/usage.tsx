@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
 interface UsageRecord {
-  id: string
+  id: Number(string)
   callerId: string
   createdAt: string
   firstNameRecordingUrl?: string
@@ -54,7 +54,7 @@ export default function UsageReviewPage() {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        id: u.id,
+        id: Number(u).id,
         transcription: u.transcription,
       }),
     })

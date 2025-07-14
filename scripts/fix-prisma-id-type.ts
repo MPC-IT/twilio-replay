@@ -1,4 +1,3 @@
-
 const fs = require('fs');
 const path = require('path');
 
@@ -16,7 +15,7 @@ function walkDir(dir: string, callback: (filePath: string) => void): void {
 
 function patchFile(filePath: string): void {
   const content: string = fs.readFileSync(filePath, 'utf8');
-  const updated: string = content.replace(/id:\s*user\.id/g, 'id: String(user.id)');
+  const updated: string = content.replace(/id:\s*([a-zA-Z0-9_]+)/g, 'id: Number(Number)($1)');
   if (content !== updated) {
     fs.writeFileSync(filePath, updated, 'utf8');
     console.log(`✅ Patched: ${filePath}`);

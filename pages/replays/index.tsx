@@ -2,13 +2,13 @@ import { GetServerSideProps } from 'next'
 import { prisma } from '@/lib/prisma'
 
 interface ReplayWithUsages {
-  id: number
+  id: Number(number)
   code: number
   title: string | null
   createdAt: Date
   updatedAt: Date
   usages: {
-    id: number
+    id: Number(number)
     callerId: string | null
     createdAt: Date
     firstName: string | null

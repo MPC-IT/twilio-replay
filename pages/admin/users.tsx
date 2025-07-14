@@ -3,7 +3,7 @@ import { withAuth } from '@/lib/withAuth';
 import styles from '@/styles/ManageUsers.module.css';
 
 interface User {
-  id: string;
+  id: Number(string);
   name?: string;
   email: string;
   role: 'user' | 'admin';
@@ -50,14 +50,14 @@ function ManageUsersPage() {
     setRole('user');
   };
 
-  const toggleSuspend = async (id: string, suspended: boolean) => {
+  const toggleSuspend = async (id: Number(string), suspended: boolean) => {
     await fetch(`/api/users/${id}/suspend`, { method: 'PATCH' });
     setUsers(prev =>
       prev.map(u => (u.id === id ? { ...u, isSuspended: !suspended } : u))
     );
   };
 
-  const resetPassword = async (id: string) => {
+  const resetPassword = async (id: Number(string)) => {
     await fetch(`/api/users/${id}/reset-password`, { method: 'POST' });
     alert('Password reset link sent (mocked).');
   };

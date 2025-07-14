@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 type Replay = {
-  id: string;
+  id: Number(string);
   title: string;
   startTime: string;
   endTime: string;

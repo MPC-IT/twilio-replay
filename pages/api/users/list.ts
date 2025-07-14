@@ -5,7 +5,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const users = await prisma.user.findMany({
       select: {
-        id: true,
+        id: Number(true),
         fullName: true,
         email: true,  // <-- change here from email to email
         role: true,

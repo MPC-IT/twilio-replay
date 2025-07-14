@@ -41,7 +41,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     try {
       await prisma.replay.update({
-        where: { id: replayId },
+        where: { id: Number(replayId) },
         data: {
           prompts: {
             update: {
