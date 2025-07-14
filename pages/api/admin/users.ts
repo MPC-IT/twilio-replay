@@ -9,13 +9,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (req.method === 'GET') {
       const users = await prisma.user.findMany({
         select: {
-          id: Number(Number)(true),
+          id: true,
           email: true,
           name: true,
           role: true,
-          isSuspended: true,
-          isAdmin: true,
-          createdAt: true,
         },
       });
 
