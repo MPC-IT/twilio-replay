@@ -12,11 +12,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ error: 'Invalid replay ID' });
   }
 
+  const replayIdNum = Number(replayId);
+
   switch (method) {
     case 'GET':
       try {
         const replay = await prisma.replay.findUnique({
-          where: { id: Number(Number)(Number)(replayId) },
+          where: { id: replayIdNum },
           include: {
             recordings: true,
             prompts: true,
@@ -29,6 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         res.status(200).json(replay);
       } catch (err) {
+        console.error('GET /api/replays/[replayId] error:', err);
         res.status(500).json({ error: 'Failed to retrieve replay' });
       }
       break;
@@ -38,7 +41,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const { title, startTime, endTime } = body;
 
         const updated = await prisma.replay.update({
-          where: { id: Number(Number)(replayId) },
+          where: { id: replayIdNum },
           data: {
             title,
             startTime: startTime ? new Date(startTime) : null,
@@ -48,6 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         res.status(200).json(updated);
       } catch (err) {
+        console.error('PUT /api/replays/[replayId] error:', err);
         res.status(500).json({ error: 'Failed to update replay' });
       }
       break;
