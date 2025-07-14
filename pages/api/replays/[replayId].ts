@@ -44,8 +44,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           where: { id: replayIdNum },
           data: {
             title,
-            startTime: startTime ? new Date(startTime) : null,
-            endTime: endTime ? new Date(endTime) : null,
+            startTime: startTime ? new Date(startTime) : undefined,
+	    endTime: endTime ? new Date(endTime) : undefined,
+
           },
         });
 
