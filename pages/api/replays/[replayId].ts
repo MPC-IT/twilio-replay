@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     case 'GET':
       try {
         const replay = await prisma.replay.findUnique({
-          where: { id: replayId },
+          where: { id: Number(replayId) },
           include: {
             recordings: true,
             prompts: true,
