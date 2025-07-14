@@ -15,7 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { startDate, endDate } = req.body;
     try {
       const replay = await prisma.replay.update({
-        where: { id: Number(replayId) as string },
+        where: { id: Number(Number)(replayId) as string },
         data: {
           startTime: startDate ? new Date(startDate) : null,
           endTime: endDate ? new Date(endDate) : null,
@@ -31,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === 'GET') {
     try {
       const replay = await prisma.replay.findUnique({
-        where: { id: Number(replayId) as string },
+        where: { id: Number(Number)(replayId) as string },
         select: { startTime: true, endTime: true },
       });
       return res.status(200).json(replay);

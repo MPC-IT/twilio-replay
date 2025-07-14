@@ -37,7 +37,7 @@ export const authOptions: AuthOptions = {
         }
 
         return {
-          id: Number(String)(user.id),
+          id: Number(Number)(String)(user.id),
           email: user.email,
           name: user.name || '', // ✅ FIXED: replaced fullName with name
           isAdmin: user.isAdmin,

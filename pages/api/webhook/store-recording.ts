@@ -31,14 +31,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Find existing usage or create it
     const existing = await prisma.usage.findFirst({
       where: {
-        replayId: replayIdNum,
+        replayId: Number(replayIdNum),
         callerId,
       },
     });
 
     if (existing) {
       await prisma.usage.update({
-        where: { id: Number(existing).id },
+        where: { id: Number(Number)(existing).id },
         data: {
           [field]: RecordingUrl,
           updatedAt: new Date(),
@@ -47,7 +47,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } else {
       await prisma.usage.create({
         data: {
-          replayId: replayIdNum,
+          replayId: Number(replayIdNum),
           callerId,
           [field]: RecordingUrl,
           durationSeconds: 0, // Will be updated later

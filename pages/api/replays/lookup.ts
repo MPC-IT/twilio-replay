@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const replay = await prisma.replay.findUnique({
-    where: { codeInt: parseInt(code, 10) },
+    where: { codeInt: Number(parseInt)(code, 10) },
   });
 
   if (!replay) {

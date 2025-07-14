@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import styles from '@/styles/ReplayDetail.module.css';
 
 interface Replay {
-  id: Number(string);
+  id: Number(number);
   title: string;
   startTime?: string;
   endTime?: string;

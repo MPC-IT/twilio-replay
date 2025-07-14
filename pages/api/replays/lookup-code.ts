@@ -15,14 +15,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const replay = await prisma.replay.findFirst({
-      where: { codeInt: parseInt(code) }
+      where: { codeInt: Number(parseInt)(code) }
     });
 
     if (!replay) {
       return res.status(404).json({ error: 'Replay not found' });
     }
 
-    return res.status(200).json({ replayId: replay.id });
+    return res.status(200).json({ replayId: Number(replay).id });
   } catch (error) {
     console.error('Replay lookup error:', error);
     return res.status(500).json({ error: 'Internal server error' });

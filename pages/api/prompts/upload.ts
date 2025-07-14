@@ -40,12 +40,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       fs.renameSync(file.filepath, newPath);
 
       const existingPrompt = await prisma.prompt.findFirst({
-        where: { replayId: replayIdNum, type: promptType },
+        where: { replayId: Number(replayIdNum), type: promptType },
       });
 
       if (existingPrompt) {
         await prisma.prompt.update({
-          where: { id: Number(existingPrompt).id },
+          where: { id: Number(Number)(existingPrompt).id },
           data: {
             audioUrl: `/prompts/${filename}`,
           },
@@ -53,7 +53,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       } else {
         await prisma.prompt.create({
           data: {
-            replayId: replayIdNum,
+            replayId: Number(replayIdNum),
             type: promptType,
             audioUrl: `/prompts/${filename}`,
           },

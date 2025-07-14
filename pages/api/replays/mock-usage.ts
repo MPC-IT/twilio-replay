@@ -32,7 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // Create mock usage record
   const usage = await prisma.usage.create({
     data: {
-      replayId: replay.id,
+      replayId: Number(replay).id,
       callerId: '1234567890',
       durationSeconds: 280,
       firstNameRecordingUrl: 'https://example.com/first.wav',

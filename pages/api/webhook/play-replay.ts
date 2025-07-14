@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const id = parseInt(replayId as string, 10);
   const replay = await prisma.replay.findFirst({
-    where: { replayId: id },
+    where: { replayId: Number(id) },
   });
 
   if (!replay) {
@@ -38,7 +38,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const recording = await prisma.recording.findFirst({
-    where: { replayId: id },
+    where: { replayId: Number(id) },
   });
 
   if (!recording?.url) {

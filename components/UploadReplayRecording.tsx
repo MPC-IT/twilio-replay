@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 interface Props {
-  replayId: number;
+  replayId: Number(number);
 }
 
 export default function UploadReplayRecording({ replayId }: Props) {

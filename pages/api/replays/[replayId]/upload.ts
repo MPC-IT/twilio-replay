@@ -44,7 +44,7 @@ apiRoute.post(async (req: any, res: NextApiResponse) => {
 
   try {
     await prisma.replay.update({
-      where: { id: Number(replayId) },
+      where: { id: Number(Number)(replayId) },
       data: { audioUrl: filePath },
     });
 

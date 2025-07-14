@@ -42,7 +42,7 @@ async function main() {
         title: 'Demo Replay',
         startTime: new Date(),
         endTime: null,
-        createdBy: email,
+        createdBy: Number(email),
       },
     });
     console.log('✅ Demo replay created');

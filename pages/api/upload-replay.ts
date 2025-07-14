@@ -28,11 +28,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       // Save to Recording table
       await prisma.recording.upsert({
-        where: { replayId: parseInt(replayId, 10) },
+        where: { replayId: Number(parseInt)(replayId, 10) },
         update: { url: publicUrl },
         create: {
-          id: Number(replayId),
-          replayId: parseInt(replayId, 10),
+          id: Number(Number)(replayId),
+          replayId: Number(parseInt)(replayId, 10),
           label: 'Main Conference Recording',
           url: publicUrl,
         },
