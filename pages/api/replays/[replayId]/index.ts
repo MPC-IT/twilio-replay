@@ -1,48 +1,40 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { prisma } from '@/lib/prisma'
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { prisma } from '@/lib/prisma';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { replayId } = req.query
+  const {
+    query: { replayId },
+    method,
+  } = req;
 
-  if (req.method !== 'GET') {
-    return res.status(405).json({ message: 'Method not allowed' })
+  const id = parseInt(replayId as string, 10);
+  if (isNaN(id)) {
+    return res.status(400).json({ error: 'Invalid replay ID' });
   }
 
-  if (!replayId || typeof replayId !== 'string') {
-    return res.status(400).json({ message: 'Invalid or missing replayId' })
-  }
+  switch (method) {
+    case 'GET':
+      try {
+        const replay = await prisma.replay.findUnique({
+          where: { id },
+          include: {
+            recordings: true,
+            prompts: true,
+          },
+        });
 
-  try {
-    const replay = await prisma.replay.findUnique({
-      where: { id: Number(Number)(replayId) },
-      include: {
-        recordings: true,
-        prompts: true,
-        usageRecords: true,
-      },
-    })
+        if (!replay) {
+          return res.status(404).json({ error: 'Replay not found' });
+        }
 
-    if (!replay) {
-      return res.status(404).json({ message: 'Replay not found' })
-    }
+        res.status(200).json(replay);
+      } catch (err) {
+        res.status(500).json({ error: 'Failed to retrieve replay' });
+      }
+      break;
 
-    // Convert prompts array into a key-value map
-    const promptMap: Record<string, string> = {}
-    replay.prompts?.forEach((prompt: { type: string; audioUrl: string }) => {
-      promptMap[prompt.type] = prompt.audioUrl
-    })
-
-    res.status(200).json({
-      ...replay,
-      prompts: {
-        firstName: promptMap['firstName'] || '',
-        lastName: promptMap['lastName'] || '',
-        company: promptMap['company'] || '',
-        phone: promptMap['phone'] || '',
-      },
-    })
-  } catch (error) {
-    console.error('❌ Error fetching replay:', error)
-    res.status(500).json({ message: 'Internal server error' })
+    default:
+      res.setHeader('Allow', ['GET']);
+      res.status(405).end(`Method ${method} Not Allowed`);
   }
 }

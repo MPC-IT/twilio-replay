@@ -1,58 +1,68 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import nextConnect from 'next-connect';
-import multer from 'multer';
-import path from 'path';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { getSession } from 'next-auth/react';
+import formidable from 'formidable';
 import fs from 'fs';
+import path from 'path';
 import { prisma } from '@/lib/prisma';
 
 export const config = {
   api: {
-    bodyParser: false, // Required for multer
+    bodyParser: false,
   },
 };
 
-const uploadDir = path.join(process.cwd(), 'public/uploads');
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const session = await getSession({ req });
+  if (!session) return res.status(401).json({ message: 'Unauthorized' });
 
-// Ensure the uploads directory exists
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
+  const uploadDir = path.join(process.cwd(), 'public', 'prompts');
+  if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+
+  const form = new formidable.IncomingForm({ uploadDir, keepExtensions: true });
+
+  form.parse(req, async (err, fields, files) => {
+    if (err) return res.status(500).json({ error: 'Form parsing failed' });
+
+    const { type, replayId } = fields;
+    const file = Array.isArray(files.file) ? files.file[0] : files.file;
+
+    if (!type || !replayId || !file) {
+      return res.status(400).json({ error: 'Missing type, replayId, or file' });
+    }
+
+    const promptType = String(type);
+    const replayIdNum = parseInt(String(replayId), 10);
+    const filename = `${replayIdNum}_${promptType}.mp3`;
+    const newPath = path.join(uploadDir, filename);
+
+    try {
+      fs.renameSync(file.filepath, newPath);
+
+      const existingPrompt = await prisma.prompt.findFirst({
+        where: { replayId: replayIdNum, type: promptType },
+      });
+
+      if (existingPrompt) {
+        await prisma.prompt.update({
+          where: { id: existingPrompt.id },
+          data: {
+            audioUrl: `/prompts/${filename}`,
+          },
+        });
+      } else {
+        await prisma.prompt.create({
+          data: {
+            replayId: replayIdNum,
+            type: promptType,
+            audioUrl: `/prompts/${filename}`,
+          },
+        });
+      }
+
+      return res.status(200).json({ message: 'Prompt uploaded', path: `/prompts/${filename}` });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: 'Failed to save or update prompt' });
+    }
+  });
 }
-
-const storage = multer.diskStorage({
-  destination: (_, __, cb) => {
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    const replayId = (req.query.replayId as string).replace(/[^a-zA-Z0-9_-]/g, '');
-    const ext = path.extname(file.originalname);
-    cb(null, `replay-${replayId}${ext}`);
-  },
-});
-
-const upload = multer({ storage });
-const apiRoute = nextConnect<NextApiRequest, NextApiResponse>();
-
-apiRoute.use(upload.single('audio'));
-
-apiRoute.post(async (req: any, res: NextApiResponse) => {
-  if (!req.file) {
-    return res.status(400).json({ error: 'No file uploaded' });
-  }
-
-  const replayId = req.query.replayId as string;
-  const filePath = `/uploads/${req.file.filename}`;
-
-  try {
-    await prisma.replay.update({
-      where: { id: Number(Number)(replayId) },
-      data: { audioUrl: filePath },
-    });
-
-    return res.status(200).json({ success: true, file: filePath });
-  } catch (error) {
-    console.error('Error updating audioUrl:', error);
-    return res.status(500).json({ error: 'Failed to save audio path to database' });
-  }
-});
-
-export default apiRoute;

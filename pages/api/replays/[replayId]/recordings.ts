@@ -2,24 +2,25 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '@/lib/prisma';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const replayId = parseInt(req.query.replayId as string, 10);
+  const { method, query } = req;
 
-  if (!replayId || isNaN(replayId)) {
-    return res.status(400).json({ error: 'Invalid replay ID' });
+  if (method !== 'GET') {
+    return res.status(405).json({ error: `Method ${method} Not Allowed` });
   }
 
-  if (req.method === 'DELETE') {
-    try {
-      await prisma.recording.deleteMany({
-        where: { replayId },
-      });
+  const replayId = parseInt(query.replayId as string, 10);
 
-      return res.status(200).json({ message: 'Recording deleted' });
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ error: 'Failed to delete recording' });
-    }
+  if (isNaN(replayId)) {
+    return res.status(400).json({ error: 'Invalid replayId' });
   }
 
-  return res.status(405).json({ error: `Method '${req.method}' not allowed.` });
+  try {
+    const recordings = await prisma.recording.findMany({
+      where: { replayId },
+    });
+    return res.status(200).json(recordings);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to fetch recordings' });
+  }
 }

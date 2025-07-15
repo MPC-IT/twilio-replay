@@ -24,7 +24,7 @@ model User {
 
 model Replay {
   id        Int      @id @default(autoincrement())
-  code      String
+  code      Int
   codeInt   Int      @unique
   replayId  Int      @unique
   title     String
@@ -39,6 +39,7 @@ model Replay {
   prompts  Prompt[]
   recordings Recording[]
   usageRecords Usage[]
+  promptOrder  String[] @default(["firstName", "lastName", "company", "phone"])
 
   @@map("Replay")
 }

@@ -8,57 +8,50 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     body,
   } = req;
 
-  if (typeof replayId !== 'string') {
+  const id = parseInt(replayId as string, 10);
+  if (isNaN(id)) {
     return res.status(400).json({ error: 'Invalid replay ID' });
   }
-
-  const replayIdNum = Number(replayId);
 
   switch (method) {
     case 'GET':
       try {
         const replay = await prisma.replay.findUnique({
-          where: { id: replayIdNum },
+          where: { id },
           include: {
             recordings: true,
             prompts: true,
           },
         });
 
-        if (!replay) {
-          return res.status(404).json({ error: 'Replay not found' });
-        }
-
-        res.status(200).json(replay);
+        if (!replay) return res.status(404).json({ error: 'Replay not found' });
+        return res.status(200).json(replay);
       } catch (err) {
-        console.error('GET /api/replays/[replayId] error:', err);
-        res.status(500).json({ error: 'Failed to retrieve replay' });
+        return res.status(500).json({ error: 'Failed to retrieve replay' });
       }
-      break;
 
     case 'PUT':
       try {
-        const { title, startTime, endTime } = body;
+        const { title, startTime, endTime, promptOrder } = body;
 
         const updated = await prisma.replay.update({
-          where: { id: replayIdNum },
+          where: { id },
           data: {
             title,
             startTime: startTime ? new Date(startTime) : undefined,
-	    endTime: endTime ? new Date(endTime) : undefined,
-
+            endTime: endTime ? new Date(endTime) : undefined,
+            promptOrder: Array.isArray(promptOrder) ? promptOrder : undefined,
           },
         });
 
-        res.status(200).json(updated);
+        return res.status(200).json(updated);
       } catch (err) {
-        console.error('PUT /api/replays/[replayId] error:', err);
-        res.status(500).json({ error: 'Failed to update replay' });
+        console.error(err);
+        return res.status(500).json({ error: 'Failed to update replay' });
       }
-      break;
 
     default:
       res.setHeader('Allow', ['GET', 'PUT']);
-      res.status(405).end(`Method ${method} Not Allowed`);
+      return res.status(405).end(`Method ${method} Not Allowed`);
   }
 }

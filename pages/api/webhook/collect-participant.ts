@@ -1,38 +1,41 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { twiml } from 'twilio';
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
+import { prisma } from '@/lib/prisma';
+ 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { Digits, callerId } = req.query;
-
-  const replayId = Digits || req.body.Digits;
-  const caller = callerId || req.body.From;
-
-  const response = new twiml.VoiceResponse();
-
-  if (!replayId || !caller) {
-    response.say('Missing replay information. Goodbye.');
-    response.hangup();
-    res.setHeader('Content-Type', 'text/xml');
-    return res.status(400).send(response.toString());
+  const { replayId } = req.query;
+ 
+  if (!replayId || typeof replayId !== 'string') {
+    return res.status(400).send('Missing or invalid replay ID');
   }
-
-  response.say('Please say your first name after the beep.');
-
-  response.record({
-    action: `/api/webhook/record-last-name?replayId=${replayId}&callerId=${encodeURIComponent(caller)}&field=firstNameRecordingUrl`,
-    method: 'POST',
-    maxLength: 10,
-    timeout: 5,
-    playBeep: true,
-    trim: 'do-not-trim',
+ 
+  const codeInt = parseInt(replayId, 10);
+  if (isNaN(codeInt)) {
+    return res.status(400).send('Invalid replay ID');
+  }
+ 
+  const replay = await prisma.replay.findUnique({
+    where: { code: codeInt },
   });
-
+ 
+  if (!replay) {
+    return res.status(404).send('Replay not found');
+  }
+ 
+  const promptOrder = replay.promptOrder || ['firstName', 'lastName', 'company', 'phone'];
+ 
+  // Determine which prompt to collect first based on what's already recorded (optional logic)
+  const stepMap: Record<string, string> = {
+    firstName: 'record-first-name',
+    lastName: 'record-last-name',
+    company: 'record-company',
+    phone: 'record-phone',
+  };
+ 
+  const redirectTo = stepMap[promptOrder[0]] || 'record-first-name';
+ 
+  const response = new twiml.VoiceResponse();
+  response.redirect(`/api/webhook/${redirectTo}?replayId=${codeInt}`);
   res.setHeader('Content-Type', 'text/xml');
   res.status(200).send(response.toString());
 }
