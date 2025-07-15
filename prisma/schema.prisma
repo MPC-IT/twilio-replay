@@ -79,6 +79,10 @@ model Usage {
   lastNameRecordingUrl  String?
   companyRecordingUrl   String?
   phoneRecordingUrl     String?
+  firstName             String?  
+  lastName              String? 
+  company               String?  
+  phone                 String?  
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
 
@@ -86,3 +90,4 @@ model Usage {
 
   @@map("Usage")
 }
+
