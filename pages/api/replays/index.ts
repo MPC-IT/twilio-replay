@@ -8,17 +8,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ message: 'Method not allowed' })
   }
 
-  const id = parseInt(replayId as string, 10)
-  if (isNaN(id)) {
-    return res.status(400).json({ message: 'Invalid replayId' })
+  if (!replayId || typeof replayId !== 'string') {
+    return res.status(400).json({ message: 'Invalid or missing replayId' })
   }
 
   try {
     const replay = await prisma.replay.findUnique({
-      where: { codeInt: Number(id) },
+      where: { id: parseInt(replayId) },
       include: {
-        prompts: true,
         recordings: true,
+        prompts: true,
         usageRecords: true,
       },
     })
@@ -27,20 +26,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(404).json({ message: 'Replay not found' })
     }
 
-    // Convert prompts array to key-value map
+    // Convert prompts array into a key-value map
     const promptMap: Record<string, string> = {}
     replay.prompts.forEach((p) => {
-      if (p.type && p.recordingUrl) {
-        promptMap[p.type] = p.recordingUrl
+      if (p.type && p.audioUrl) {
+        promptMap[p.type] = p.audioUrl
       }
     })
 
-    return res.status(200).json({
-      ...replay,
-      prompts: promptMap,
-    })
-  } catch (error: any) {
-    console.error('Replay fetch error:', error)
-    return res.status(500).json({ message: 'Internal server error' })
+    res.status(200).json({ ...replay, promptMap })
+  } catch (err) {
+    console.error('Error fetching replay:', err)
+    res.status(500).json({ message: 'Internal server error' })
   }
 }
