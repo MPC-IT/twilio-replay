@@ -6,16 +6,16 @@ const steps = ['firstName', 'lastName', 'company', 'phone'];
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { step, replayCode } = req.query;
-  const recordingUrl = req.body.RecordingUrl;
+  const audioUrl = req.body.RecordingUrl;
 
   const stepIndex = steps.indexOf(step as string);
 
   // Save prior step’s recording
-  if (stepIndex > 0 && recordingUrl && replayCode) {
+  if (stepIndex > 0 && audioUrl && replayCode) {
     await prisma.usage.create({
       data: {
         replayId: Number(String)(replayCode),
-        [`caller${capitalize(steps[stepIndex - 1])}`]: recordingUrl,
+        [`caller${capitalize(steps[stepIndex - 1])}`]: audioUrl,
         durationSeconds: 0, // updated later
       },
     });
