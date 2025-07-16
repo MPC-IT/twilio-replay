@@ -1,3 +1,4 @@
+// types/global.d.ts
 export {};
 
 declare global {
@@ -13,7 +14,6 @@ declare global {
       ADMIN_PASSWORD?: string;
       SUPABASE_SERVICE_ROLE_KEY?: string;
       SUPABASE_JWT_SECRET?: string;
-      SENTRY_DSN?: string;
     }
   }
 }
