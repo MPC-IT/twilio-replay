@@ -10,7 +10,7 @@ const REQUIRED_ENV_VARS = [
 ];
 
 export function validateEnv() {
-  const missing = REQUIRED_ENV_VARS.filter((key) => !process.env[key]);
+  const missing = REQUIRED_ENV_VARS.filter((key) => !(process.env as Record<string, string | undefined>)[key]);
 
   if (missing.length > 0) {
     const message = `⚠️ Missing required ENV vars: ${missing.join(', ')}`;
