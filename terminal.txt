@@ -1,0 +1,936 @@
+272 }
+    ~
+
+node_modules/twilio/lib/rest/studio/v2/flow/flowRevision.d.ts:87:18 - error TS1005: ';' expected.
+
+87     valid: Number(Number)(boolean);
+                    ~
+
+node_modules/twilio/lib/rest/studio/v2/flow/flowRevision.d.ts:87:26 - error TS1005: ';' expected.
+
+87     valid: Number(Number)(boolean);
+                            ~
+
+node_modules/twilio/lib/rest/studio/v2/flow/flowRevision.d.ts:126:18 - error TS1441: Cannot start a function call in a type annotation.
+
+126     valid: Number(Number)(boolean);
+                     ~
+
+node_modules/twilio/lib/rest/studio/v2/flow/flowRevision.d.ts:126:19 - error TS1435: Unknown keyword or identifier. Did you mean 'number'?
+
+126     valid: Number(Number)(boolean);
+                      ~~~~~~
+
+node_modules/twilio/lib/rest/studio/v2/flow/flowRevision.d.ts:126:25 - error TS1068: Unexpected token. A constructor, method, accessor, or property was expected.
+
+126     valid: Number(Number)(boolean);
+                            ~
+
+node_modules/twilio/lib/rest/studio/v2/flow/flowRevision.d.ts:126:26 - error TS1068: Unexpected token. A constructor, method, accessor, or property was expected.
+
+126     valid: Number(Number)(boolean);
+                             ~
+
+node_modules/twilio/lib/rest/studio/v2/flow/flowRevision.d.ts:143:5 - error TS1128: Declaration or statement expected.
+
+143     private get _proxy();
+        ~~~~~~~
+
+node_modules/twilio/lib/rest/studio/v2/flow/flowRevision.d.ts:143:13 - error TS1434: Unexpected keyword or identifier.
+
+143     private get _proxy();
+                ~~~
+
+node_modules/twilio/lib/rest/studio/v2/flow/flowRevision.d.ts:151:20 - error TS1109: Expression expected.
+
+151     fetch(callback?: (error: Error | null, item?: FlowRevisionInstance) => any): Promise<FlowRevisionInstance>;
+                       ~
+
+node_modules/twilio/lib/rest/studio/v2/flow/flowRevision.d.ts:151:80 - error TS1005: ';' expected.
+
+151     fetch(callback?: (error: Error | null, item?: FlowRevisionInstance) => any): Promise<FlowRevisionInstance>;
+                                                                                   ~
+
+node_modules/twilio/lib/rest/studio/v2/flow/flowRevision.d.ts:157:13 - error TS1005: ';' expected.
+
+157     toJSON(): {
+                ~
+
+node_modules/twilio/lib/rest/studio/v2/flow/flowRevision.d.ts:171:28 - error TS1005: ',' expected.
+
+171     [inspect.custom](_depth: any, options: InspectOptions): string;
+                               ~
+
+node_modules/twilio/lib/rest/studio/v2/flow/flowRevision.d.ts:171:42 - error TS1005: ',' expected.
+
+171     [inspect.custom](_depth: any, options: InspectOptions): string;
+                                             ~
+
+node_modules/twilio/lib/rest/studio/v2/flow/flowRevision.d.ts:171:59 - error TS1005: ';' expected.
+
+171     [inspect.custom](_depth: any, options: InspectOptions): string;
+                                                              ~
+
+node_modules/twilio/lib/rest/studio/v2/flow/flowRevision.d.ts:172:1 - error TS1128: Declaration or statement expected.
+
+172 }
+    ~
+
+node_modules/twilio/lib/rest/studio/v2/flowValidate.d.ts:41:18 - error TS1005: ';' expected.
+
+41     valid: Number(Number)(boolean);
+                    ~
+
+node_modules/twilio/lib/rest/studio/v2/flowValidate.d.ts:41:26 - error TS1005: ';' expected.
+
+41     valid: Number(Number)(boolean);
+                            ~
+
+node_modules/twilio/lib/rest/studio/v2/flowValidate.d.ts:49:18 - error TS1441: Cannot start a function call in a type annotation.
+
+49     valid: Number(Number)(boolean);
+                    ~
+
+node_modules/twilio/lib/rest/studio/v2/flowValidate.d.ts:49:19 - error TS1435: Unknown keyword or identifier. Did you mean 'number'?
+
+49     valid: Number(Number)(boolean);
+                     ~~~~~~
+
+node_modules/twilio/lib/rest/studio/v2/flowValidate.d.ts:49:25 - error TS1068: Unexpected token. A constructor, method, accessor, or property was expected.
+
+49     valid: Number(Number)(boolean);
+                           ~
+
+node_modules/twilio/lib/rest/studio/v2/flowValidate.d.ts:49:26 - error TS1068: Unexpected token. A constructor, method, accessor, or property was expected.
+
+49     valid: Number(Number)(boolean);
+                            ~
+
+node_modules/twilio/lib/rest/studio/v2/flowValidate.d.ts:55:13 - error TS1005: ';' expected.
+
+55     toJSON(): {
+               ~
+
+node_modules/twilio/lib/rest/studio/v2/flowValidate.d.ts:58:28 - error TS1005: ',' expected.
+
+58     [inspect.custom](_depth: any, options: InspectOptions): string;
+                              ~
+
+node_modules/twilio/lib/rest/studio/v2/flowValidate.d.ts:58:42 - error TS1005: ',' expected.
+
+58     [inspect.custom](_depth: any, options: InspectOptions): string;
+                                            ~
+
+node_modules/twilio/lib/rest/studio/v2/flowValidate.d.ts:58:59 - error TS1005: ';' expected.
+
+58     [inspect.custom](_depth: any, options: InspectOptions): string;
+                                                             ~
+
+node_modules/twilio/lib/rest/studio/v2/flowValidate.d.ts:59:1 - error TS1128: Declaration or statement expected.
+
+59 }
+   ~
+
+node_modules/twilio/lib/rest/trunking/v1/trunk.d.ts:180:31 - error TS1005: ';' expected.
+
+180     transfer_caller_id: Number(Number)(TrunkTransferCallerId);
+                                  ~
+
+node_modules/twilio/lib/rest/trunking/v1/trunk.d.ts:180:39 - error TS1005: ';' expected.
+
+180     transfer_caller_id: Number(Number)(TrunkTransferCallerId);
+                                          ~
+
+node_modules/twilio/lib/rest/verify/v2/service/verification.d.ts:111:18 - error TS1005: ';' expected.
+
+111     valid: Number(Number)(boolean);
+                     ~
+
+node_modules/twilio/lib/rest/verify/v2/service/verification.d.ts:111:26 - error TS1005: ';' expected.
+
+111     valid: Number(Number)(boolean);
+                             ~
+
+node_modules/twilio/lib/rest/verify/v2/service/verification.d.ts:150:18 - error TS1441: Cannot start a function call in a type annotation.
+
+150     valid: Number(Number)(boolean);
+                     ~
+
+node_modules/twilio/lib/rest/verify/v2/service/verification.d.ts:150:19 - error TS1435: Unknown keyword or identifier. Did you mean 'number'?
+
+150     valid: Number(Number)(boolean);
+                      ~~~~~~
+
+node_modules/twilio/lib/rest/verify/v2/service/verification.d.ts:150:25 - error TS1068: Unexpected token. A constructor, method, accessor, or property was expected.
+
+150     valid: Number(Number)(boolean);
+                            ~
+
+node_modules/twilio/lib/rest/verify/v2/service/verification.d.ts:150:26 - error TS1068: Unexpected token. A constructor, method, accessor, or property was expected.
+
+150     valid: Number(Number)(boolean);
+                             ~
+
+node_modules/twilio/lib/rest/verify/v2/service/verification.d.ts:183:5 - error TS1128: Declaration or statement expected.
+
+183     private get _proxy();
+        ~~~~~~~
+
+node_modules/twilio/lib/rest/verify/v2/service/verification.d.ts:183:13 - error TS1434: Unexpected keyword or identifier.
+
+183     private get _proxy();
+                ~~~
+
+node_modules/twilio/lib/rest/verify/v2/service/verification.d.ts:191:20 - error TS1109: Expression expected.
+
+191     fetch(callback?: (error: Error | null, item?: VerificationInstance) => any): Promise<VerificationInstance>;
+                       ~
+
+node_modules/twilio/lib/rest/verify/v2/service/verification.d.ts:191:80 - error TS1005: ';' expected.
+
+191     fetch(callback?: (error: Error | null, item?: VerificationInstance) => any): Promise<VerificationInstance>;
+                                                                                   ~
+
+node_modules/twilio/lib/rest/verify/v2/service/verification.d.ts:200:18 - error TS1005: ',' expected.
+
+200     update(params: VerificationContextUpdateOptions, callback?: (error: Error | null, item?: VerificationInstance) => any): Promise<VerificationInstance>;
+                     ~
+
+node_modules/twilio/lib/rest/verify/v2/service/verification.d.ts:200:63 - error TS1109: Expression expected.
+
+200     update(params: VerificationContextUpdateOptions, callback?: (error: Error | null, item?: VerificationInstance) => any): Promise<VerificationInstance>;
+                                                                  ~
+
+node_modules/twilio/lib/rest/verify/v2/service/verification.d.ts:200:123 - error TS1005: ';' expected.
+
+200     update(params: VerificationContextUpdateOptions, callback?: (error: Error | null, item?: VerificationInstance) => any): Promise<VerificationInstance>;
+                                                                                                                              ~
+
+node_modules/twilio/lib/rest/verify/v2/service/verification.d.ts:206:13 - error TS1005: ';' expected.
+
+206     toJSON(): {
+                ~
+
+node_modules/twilio/lib/rest/verify/v2/service/verification.d.ts:223:28 - error TS1005: ',' expected.
+
+223     [inspect.custom](_depth: any, options: InspectOptions): string;
+                               ~
+
+node_modules/twilio/lib/rest/verify/v2/service/verification.d.ts:223:42 - error TS1005: ',' expected.
+
+223     [inspect.custom](_depth: any, options: InspectOptions): string;
+                                             ~
+
+node_modules/twilio/lib/rest/verify/v2/service/verification.d.ts:223:59 - error TS1005: ';' expected.
+
+223     [inspect.custom](_depth: any, options: InspectOptions): string;
+                                                              ~
+
+node_modules/twilio/lib/rest/verify/v2/service/verification.d.ts:224:1 - error TS1128: Declaration or statement expected.
+
+224 }
+    ~
+
+node_modules/twilio/lib/rest/verify/v2/service/verificationCheck.d.ts:63:18 - error TS1005: ';' expected.
+
+63     valid: Number(Number)(boolean);
+                    ~
+
+node_modules/twilio/lib/rest/verify/v2/service/verificationCheck.d.ts:63:26 - error TS1005: ';' expected.
+
+63     valid: Number(Number)(boolean);
+                            ~
+
+node_modules/twilio/lib/rest/verify/v2/service/verificationCheck.d.ts:97:18 - error TS1441: Cannot start a function call in a type annotation.
+
+97     valid: Number(Number)(boolean);
+                    ~
+
+node_modules/twilio/lib/rest/verify/v2/service/verificationCheck.d.ts:97:19 - error TS1435: Unknown keyword or identifier. Did you mean 'number'?
+
+97     valid: Number(Number)(boolean);
+                     ~~~~~~
+
+node_modules/twilio/lib/rest/verify/v2/service/verificationCheck.d.ts:97:25 - error TS1068: Unexpected token. A constructor, method, accessor, or property was expected.
+
+97     valid: Number(Number)(boolean);
+                           ~
+
+node_modules/twilio/lib/rest/verify/v2/service/verificationCheck.d.ts:97:26 - error TS1068: Unexpected token. A constructor, method, accessor, or property was expected.
+
+97     valid: Number(Number)(boolean);
+                            ~
+
+node_modules/twilio/lib/rest/verify/v2/service/verificationCheck.d.ts:123:13 - error TS1005: ';' expected.
+
+123     toJSON(): {
+                ~
+
+node_modules/twilio/lib/rest/verify/v2/service/verificationCheck.d.ts:137:28 - error TS1005: ',' expected.
+
+137     [inspect.custom](_depth: any, options: InspectOptions): string;
+                               ~
+
+node_modules/twilio/lib/rest/verify/v2/service/verificationCheck.d.ts:137:42 - error TS1005: ',' expected.
+
+137     [inspect.custom](_depth: any, options: InspectOptions): string;
+                                             ~
+
+node_modules/twilio/lib/rest/verify/v2/service/verificationCheck.d.ts:137:59 - error TS1005: ';' expected.
+
+137     [inspect.custom](_depth: any, options: InspectOptions): string;
+                                                              ~
+
+node_modules/twilio/lib/rest/verify/v2/service/verificationCheck.d.ts:138:1 - error TS1128: Declaration or statement expected.
+
+138 }
+    ~
+
+node_modules/twilio/lib/twiml/VoiceResponse.d.ts:1647:31 - error TS1441: Cannot start a function call in a type annotation.
+
+1647         applicationSid: Number(Number)(XMLElement);
+                                   ~
+
+node_modules/twilio/lib/twiml/VoiceResponse.d.ts:1647:32 - error TS1435: Unknown keyword or identifier. Did you mean 'number'?
+
+1647         applicationSid: Number(Number)(XMLElement);
+                                    ~~~~~~
+
+node_modules/twilio/lib/twiml/VoiceResponse.d.ts:1647:38 - error TS1068: Unexpected token. A constructor, method, accessor, or property was expected.
+
+1647         applicationSid: Number(Number)(XMLElement);
+                                          ~
+
+node_modules/twilio/lib/twiml/VoiceResponse.d.ts:1647:39 - error TS1068: Unexpected token. A constructor, method, accessor, or property was expected.
+
+1647         applicationSid: Number(Number)(XMLElement);
+                                           ~
+
+node_modules/twilio/lib/twiml/VoiceResponse.d.ts:1651:35 - error TS1005: ',' expected.
+
+1651         constructor(applicationSid: Number(Number)(XMLElement));
+                                       ~
+
+node_modules/twilio/lib/twiml/VoiceResponse.d.ts:2774:1 - error TS1128: Declaration or statement expected.
+
+2774 }
+     ~
+
+node_modules/typescript/lib/lib.dom.d.ts:1435:15 - error TS1005: ';' expected.
+
+1435     id: Number(Number)(BufferSource);
+                   ~
+
+node_modules/typescript/lib/lib.dom.d.ts:1435:23 - error TS1005: ';' expected.
+
+1435     id: Number(Number)(BufferSource);
+                           ~
+
+node_modules/typescript/lib/lib.dom.d.ts:1441:15 - error TS1005: ';' expected.
+
+1441     id: Number(Number)(Base64URLString);
+                   ~
+
+node_modules/typescript/lib/lib.dom.d.ts:1441:23 - error TS1005: ';' expected.
+
+1441     id: Number(Number)(Base64URLString);
+                           ~
+
+node_modules/typescript/lib/lib.dom.d.ts:1480:15 - error TS1005: ';' expected.
+
+1480     id: Number(Number)(BufferSource);
+                   ~
+
+node_modules/typescript/lib/lib.dom.d.ts:1480:23 - error TS1005: ';' expected.
+
+1480     id: Number(Number)(BufferSource);
+                           ~
+
+node_modules/typescript/lib/lib.dom.d.ts:1485:15 - error TS1005: ';' expected.
+
+1485     id: Number(Number)(Base64URLString);
+                   ~
+
+node_modules/typescript/lib/lib.dom.d.ts:1485:23 - error TS1005: ';' expected.
+
+1485     id: Number(Number)(Base64URLString);
+                           ~
+
+node_modules/typescript/lib/lib.dom.d.ts:1789:15 - error TS1005: ';' expected.
+
+1789     id: Number(Number)(number);
+                   ~
+
+node_modules/typescript/lib/lib.dom.d.ts:1789:23 - error TS1005: ';' expected.
+
+1789     id: Number(Number)(number);
+                           ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18910:24 - error TS1005: ';' expected.
+
+18910     readonly id: Number(Number)(number) | null;
+                             ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18910:32 - error TS1005: ';' expected.
+
+18910     readonly id: Number(Number)(number) | null;
+                                     ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18910:41 - error TS1005: ';' expected.
+
+18910     readonly id: Number(Number)(number) | null;
+                                              ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18912:5 - error TS1128: Declaration or statement expected.
+
+18912     readonly label: string;
+          ~~~~~~~~
+
+node_modules/typescript/lib/lib.dom.d.ts:18914:5 - error TS1128: Declaration or statement expected.
+
+18914     readonly maxPacketLifeTime: number | null;
+          ~~~~~~~~
+
+node_modules/typescript/lib/lib.dom.d.ts:18916:5 - error TS1128: Declaration or statement expected.
+
+18916     readonly maxRetransmits: number | null;
+          ~~~~~~~~
+
+node_modules/typescript/lib/lib.dom.d.ts:18918:5 - error TS1128: Declaration or statement expected.
+
+18918     readonly negotiated: boolean;
+          ~~~~~~~~
+
+node_modules/typescript/lib/lib.dom.d.ts:18932:5 - error TS1128: Declaration or statement expected.
+
+18932     readonly ordered: boolean;
+          ~~~~~~~~
+
+node_modules/typescript/lib/lib.dom.d.ts:18934:5 - error TS1128: Declaration or statement expected.
+
+18934     readonly protocol: string;
+          ~~~~~~~~
+
+node_modules/typescript/lib/lib.dom.d.ts:18936:5 - error TS1128: Declaration or statement expected.
+
+18936     readonly readyState: RTCDataChannelState;
+          ~~~~~~~~
+
+node_modules/typescript/lib/lib.dom.d.ts:18938:12 - error TS1005: ';' expected.
+
+18938     close(): void;
+                 ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18938:18 - error TS1109: Expression expected.
+
+18938     close(): void;
+                       ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18940:14 - error TS1005: ',' expected.
+
+18940     send(data: string): void;
+                   ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18940:23 - error TS1005: ';' expected.
+
+18940     send(data: string): void;
+                            ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18940:29 - error TS1109: Expression expected.
+
+18940     send(data: string): void;
+                                  ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18941:14 - error TS1005: ',' expected.
+
+18941     send(data: Blob): void;
+                   ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18941:21 - error TS1005: ';' expected.
+
+18941     send(data: Blob): void;
+                          ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18941:27 - error TS1109: Expression expected.
+
+18941     send(data: Blob): void;
+                                ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18942:14 - error TS1005: ',' expected.
+
+18942     send(data: ArrayBuffer): void;
+                   ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18942:28 - error TS1005: ';' expected.
+
+18942     send(data: ArrayBuffer): void;
+                                 ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18942:34 - error TS1109: Expression expected.
+
+18942     send(data: ArrayBuffer): void;
+                                       ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18943:14 - error TS1005: ',' expected.
+
+18943     send(data: ArrayBufferView): void;
+                   ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18943:32 - error TS1005: ';' expected.
+
+18943     send(data: ArrayBufferView): void;
+                                     ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18943:38 - error TS1109: Expression expected.
+
+18943     send(data: ArrayBufferView): void;
+                                           ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18944:60 - error TS1005: '?' expected.
+
+18944     addEventListener<K extends keyof RTCDataChannelEventMap>(type: K, listener: (this: RTCDataChannel, ev: RTCDataChannelEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+                                                                 ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18944:66 - error TS1005: ',' expected.
+
+18944     addEventListener<K extends keyof RTCDataChannelEventMap>(type: K, listener: (this: RTCDataChannel, ev: RTCDataChannelEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+                                                                       ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18944:79 - error TS1005: ',' expected.
+
+18944     addEventListener<K extends keyof RTCDataChannelEventMap>(type: K, listener: (this: RTCDataChannel, ev: RTCDataChannelEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+                                                                                    ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18944:151 - error TS1109: Expression expected.
+
+18944     addEventListener<K extends keyof RTCDataChannelEventMap>(type: K, listener: (this: RTCDataChannel, ev: RTCDataChannelEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+                                                                                                                                                            ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18944:187 - error TS1005: ';' expected.
+
+18944     addEventListener<K extends keyof RTCDataChannelEventMap>(type: K, listener: (this: RTCDataChannel, ev: RTCDataChannelEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+                                                                                                                                                                                                ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18944:193 - error TS1109: Expression expected.
+
+18944     addEventListener<K extends keyof RTCDataChannelEventMap>(type: K, listener: (this: RTCDataChannel, ev: RTCDataChannelEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+                                                                                                                                                                                                      ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18945:26 - error TS1005: ',' expected.
+
+18945     addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+                               ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18945:44 - error TS1005: ',' expected.
+
+18945     addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+                                                 ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18945:90 - error TS1109: Expression expected.
+
+18945     addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+                                                                                               ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18945:126 - error TS1005: ';' expected.
+
+18945     addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+                                                                                                                                   ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18945:132 - error TS1109: Expression expected.
+
+18945     addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+                                                                                                                                         ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18946:63 - error TS1005: '?' expected.
+
+18946     removeEventListener<K extends keyof RTCDataChannelEventMap>(type: K, listener: (this: RTCDataChannel, ev: RTCDataChannelEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+                                                                    ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18946:69 - error TS1005: ',' expected.
+
+18946     removeEventListener<K extends keyof RTCDataChannelEventMap>(type: K, listener: (this: RTCDataChannel, ev: RTCDataChannelEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+                                                                          ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18946:82 - error TS1005: ',' expected.
+
+18946     removeEventListener<K extends keyof RTCDataChannelEventMap>(type: K, listener: (this: RTCDataChannel, ev: RTCDataChannelEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+                                                                                       ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18946:154 - error TS1109: Expression expected.
+
+18946     removeEventListener<K extends keyof RTCDataChannelEventMap>(type: K, listener: (this: RTCDataChannel, ev: RTCDataChannelEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+                                                                                                                                                               ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18946:187 - error TS1005: ';' expected.
+
+18946     removeEventListener<K extends keyof RTCDataChannelEventMap>(type: K, listener: (this: RTCDataChannel, ev: RTCDataChannelEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+                                                                                                                                                                                                ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18946:193 - error TS1109: Expression expected.
+
+18946     removeEventListener<K extends keyof RTCDataChannelEventMap>(type: K, listener: (this: RTCDataChannel, ev: RTCDataChannelEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+                                                                                                                                                                                                      ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18947:29 - error TS1005: ',' expected.
+
+18947     removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+                                  ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18947:47 - error TS1005: ',' expected.
+
+18947     removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+                                                    ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18947:93 - error TS1109: Expression expected.
+
+18947     removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+                                                                                                  ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18947:126 - error TS1005: ';' expected.
+
+18947     removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+                                                                                                                                   ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18947:132 - error TS1109: Expression expected.
+
+18947     removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+                                                                                                                                         ~
+
+node_modules/typescript/lib/lib.dom.d.ts:18948:1 - error TS1128: Declaration or statement expected.
+
+18948 }
+      ~
+
+node_modules/typescript/lib/lib.dom.d.ts:24027:27 - error TS1005: ';' expected.
+
+24027     readonly valid: Number(Number)(boolean);
+                                ~
+
+node_modules/typescript/lib/lib.dom.d.ts:24027:35 - error TS1005: ';' expected.
+
+24027     readonly valid: Number(Number)(boolean);
+                                        ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27284:29 - error TS1005: ',' expected.
+
+27284     clearInterval(id: Number(Number)(number) | undefined): void;
+                                  ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27284:37 - error TS1005: ';' expected.
+
+27284     clearInterval(id: Number(Number)(number) | undefined): void;
+                                          ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27284:46 - error TS1005: ';' expected.
+
+27284     clearInterval(id: Number(Number)(number) | undefined): void;
+                                                   ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27284:57 - error TS1005: ';' expected.
+
+27284     clearInterval(id: Number(Number)(number) | undefined): void;
+                                                              ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27284:58 - error TS1128: Declaration or statement expected.
+
+27284     clearInterval(id: Number(Number)(number) | undefined): void;
+                                                               ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27284:64 - error TS1109: Expression expected.
+
+27284     clearInterval(id: Number(Number)(number) | undefined): void;
+                                                                     ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27286:20 - error TS1005: ',' expected.
+
+27286     clearTimeout(id: Number(Number)(number) | undefined): void;
+                         ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27286:57 - error TS1005: ';' expected.
+
+27286     clearTimeout(id: Number(Number)(number) | undefined): void;
+                                                              ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27286:63 - error TS1109: Expression expected.
+
+27286     clearTimeout(id: Number(Number)(number) | undefined): void;
+                                                                    ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27288:28 - error TS1005: ',' expected.
+
+27288     createImageBitmap(image: ImageBitmapSource, options?: ImageBitmapOptions): Promise<ImageBitmap>;
+                                 ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27288:57 - error TS1109: Expression expected.
+
+27288     createImageBitmap(image: ImageBitmapSource, options?: ImageBitmapOptions): Promise<ImageBitmap>;
+                                                              ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27288:78 - error TS1005: ';' expected.
+
+27288     createImageBitmap(image: ImageBitmapSource, options?: ImageBitmapOptions): Promise<ImageBitmap>;
+                                                                                   ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27289:28 - error TS1005: ',' expected.
+
+27289     createImageBitmap(image: ImageBitmapSource, sx: number, sy: number, sw: number, sh: number, options?: ImageBitmapOptions): Promise<ImageBitmap>;
+                                 ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27289:51 - error TS1005: ',' expected.
+
+27289     createImageBitmap(image: ImageBitmapSource, sx: number, sy: number, sw: number, sh: number, options?: ImageBitmapOptions): Promise<ImageBitmap>;
+                                                        ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27289:63 - error TS1005: ',' expected.
+
+27289     createImageBitmap(image: ImageBitmapSource, sx: number, sy: number, sw: number, sh: number, options?: ImageBitmapOptions): Promise<ImageBitmap>;
+                                                                    ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27289:75 - error TS1005: ',' expected.
+
+27289     createImageBitmap(image: ImageBitmapSource, sx: number, sy: number, sw: number, sh: number, options?: ImageBitmapOptions): Promise<ImageBitmap>;
+                                                                                ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27289:87 - error TS1005: ',' expected.
+
+27289     createImageBitmap(image: ImageBitmapSource, sx: number, sy: number, sw: number, sh: number, options?: ImageBitmapOptions): Promise<ImageBitmap>;
+                                                                                            ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27289:105 - error TS1109: Expression expected.
+
+27289     createImageBitmap(image: ImageBitmapSource, sx: number, sy: number, sw: number, sh: number, options?: ImageBitmapOptions): Promise<ImageBitmap>;
+                                                                                                              ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27289:126 - error TS1005: ';' expected.
+
+27289     createImageBitmap(image: ImageBitmapSource, sx: number, sy: number, sw: number, sh: number, options?: ImageBitmapOptions): Promise<ImageBitmap>;
+                                                                                                                                   ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27291:16 - error TS1005: ',' expected.
+
+27291     fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response>;
+                     ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27291:42 - error TS1109: Expression expected.
+
+27291     fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response>;
+                                               ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27291:56 - error TS1005: ';' expected.
+
+27291     fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response>;
+                                                             ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27293:28 - error TS1005: ',' expected.
+
+27293     queueMicrotask(callback: VoidFunction): void;
+                                 ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27293:43 - error TS1005: ';' expected.
+
+27293     queueMicrotask(callback: VoidFunction): void;
+                                                ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27293:49 - error TS1109: Expression expected.
+
+27293     queueMicrotask(callback: VoidFunction): void;
+                                                      ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27295:18 - error TS1005: ',' expected.
+
+27295     reportError(e: any): void;
+                       ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27295:24 - error TS1005: ';' expected.
+
+27295     reportError(e: any): void;
+                             ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27295:30 - error TS1109: Expression expected.
+
+27295     reportError(e: any): void;
+                                   ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27297:24 - error TS1005: ',' expected.
+
+27297     setInterval(handler: TimerHandler, timeout?: number, ...arguments: any[]): number;
+                             ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27297:48 - error TS1109: Expression expected.
+
+27297     setInterval(handler: TimerHandler, timeout?: number, ...arguments: any[]): number;
+                                                     ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27297:70 - error TS1005: ',' expected.
+
+27297     setInterval(handler: TimerHandler, timeout?: number, ...arguments: any[]): number;
+                                                                           ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27297:76 - error TS1011: An element access expression should take an argument.
+
+27297     setInterval(handler: TimerHandler, timeout?: number, ...arguments: any[]): number;
+                                                                                 
+
+node_modules/typescript/lib/lib.dom.d.ts:27297:78 - error TS1005: ';' expected.
+
+27297     setInterval(handler: TimerHandler, timeout?: number, ...arguments: any[]): number;
+                                                                                   ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27299:23 - error TS1005: ',' expected.
+
+27299     setTimeout(handler: TimerHandler, timeout?: number, ...arguments: any[]): number;
+                            ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27299:47 - error TS1109: Expression expected.
+
+27299     setTimeout(handler: TimerHandler, timeout?: number, ...arguments: any[]): number;
+                                                    ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27299:69 - error TS1005: ',' expected.
+
+27299     setTimeout(handler: TimerHandler, timeout?: number, ...arguments: any[]): number;
+                                                                          ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27299:75 - error TS1011: An element access expression should take an argument.
+
+27299     setTimeout(handler: TimerHandler, timeout?: number, ...arguments: any[]): number;
+                                                                                
+
+node_modules/typescript/lib/lib.dom.d.ts:27299:77 - error TS1005: ';' expected.
+
+27299     setTimeout(handler: TimerHandler, timeout?: number, ...arguments: any[]): number;
+                                                                                  ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27301:23 - error TS1005: ';' expected.
+
+27301     structuredClone<T = any>(value: T, options?: StructuredSerializeOptions): T;
+                            ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27301:35 - error TS1005: ')' expected.
+
+27301     structuredClone<T = any>(value: T, options?: StructuredSerializeOptions): T;
+                                        ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27301:48 - error TS1109: Expression expected.
+
+27301     structuredClone<T = any>(value: T, options?: StructuredSerializeOptions): T;
+                                                     ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27301:76 - error TS1005: ';' expected.
+
+27301     structuredClone<T = any>(value: T, options?: StructuredSerializeOptions): T;
+                                                                                 ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27301:77 - error TS1128: Declaration or statement expected.
+
+27301     structuredClone<T = any>(value: T, options?: StructuredSerializeOptions): T;
+                                                                                  ~
+
+node_modules/typescript/lib/lib.dom.d.ts:27302:1 - error TS1128: Declaration or statement expected.
+
+27302 }
+      ~
+
+node_modules/typescript/lib/lib.dom.d.ts:29322:42 - error TS1005: ',' expected.
+
+29322 declare function clearInterval(id: Number(Number)(number) | undefined): void;
+                                               ~
+
+node_modules/typescript/lib/lib.dom.d.ts:29322:70 - error TS1005: ';' expected.
+
+29322 declare function clearInterval(id: Number(Number)(number) | undefined): void;
+                                                                           ~
+
+node_modules/typescript/lib/lib.dom.d.ts:29322:71 - error TS1128: Declaration or statement expected.
+
+29322 declare function clearInterval(id: Number(Number)(number) | undefined): void;
+                                                                            ~
+
+node_modules/typescript/lib/lib.dom.d.ts:29322:77 - error TS1109: Expression expected.
+
+29322 declare function clearInterval(id: Number(Number)(number) | undefined): void;
+                                                                                  ~
+
+node_modules/typescript/lib/lib.dom.d.ts:29324:41 - error TS1005: ',' expected.
+
+29324 declare function clearTimeout(id: Number(Number)(number) | undefined): void;
+                                              ~
+
+node_modules/typescript/lib/lib.dom.d.ts:29324:69 - error TS1005: ';' expected.
+
+29324 declare function clearTimeout(id: Number(Number)(number) | undefined): void;
+                                                                          ~
+
+node_modules/typescript/lib/lib.dom.d.ts:29324:70 - error TS1128: Declaration or statement expected.
+
+29324 declare function clearTimeout(id: Number(Number)(number) | undefined): void;
+                                                                           ~
+
+node_modules/typescript/lib/lib.dom.d.ts:29324:76 - error TS1109: Expression expected.
+
+29324 declare function clearTimeout(id: Number(Number)(number) | undefined): void;
+                                                                                 ~
+
+pages/api/users/index.ts:4:13 - error TS1005: ';' expected.
+
+4   id: Number(Number)(number);
+              ~
+
+pages/api/users/index.ts:4:21 - error TS1005: ';' expected.
+
+4   id: Number(Number)(number);
+                      ~
+
+pages/replays/index.tsx:5:13 - error TS1005: ';' expected.
+
+5   id: Number(Number)(number)
+              ~
+
+pages/replays/index.tsx:5:21 - error TS1005: ';' expected.
+
+5   id: Number(Number)(number)
+                      ~
+
+pages/replays/index.tsx:11:15 - error TS1005: ';' expected.
+
+11     id: Number(Number)(number)
+                 ~
+
+pages/replays/index.tsx:11:23 - error TS1005: ';' expected.
+
+11     id: Number(Number)(number)
+                         ~
+
+
+Found 1014 errors in 28 files.
+
+Errors  Files
+    24  node_modules/@prisma/client/runtime/library.d.ts:191
+     2  node_modules/@supabase/realtime-js/dist/module/RealtimeClient.d.ts:11
+     2  node_modules/@types/node/child_process.d.ts:1413
+   191  node_modules/@types/node/cluster.d.ts:143
+     2  node_modules/@types/node/crypto.d.ts:3420
+    52  node_modules/@types/node/fs.d.ts:57
+    97  node_modules/@types/node/fs/promises.d.ts:120
+     4  node_modules/@types/node/inspector.d.ts:259
+    12  node_modules/@types/node/os.d.ts:40
+   352  node_modules/@types/node/process.d.ts:1061
+     4  node_modules/@types/node/sqlite.d.ts:449
+    33  node_modules/@types/node/v8.d.ts:463
+     4  node_modules/axios/index.d.ts:488
+     4  node_modules/next-auth/react/types.d.ts:15
+     2  node_modules/next/dist/build/webpack/plugins/flight-manifest-plugin.d.ts:23
+     5  node_modules/next/dist/server/load-components.d.ts:8
+     2  node_modules/next/dist/trace/types.d.ts:11
+    19  node_modules/twilio/lib/rest/lookups/v2/phoneNumber.d.ts:89
+    23  node_modules/twilio/lib/rest/studio/v2/flow.d.ts:143
+    15  node_modules/twilio/lib/rest/studio/v2/flow/flowRevision.d.ts:87
+    11  node_modules/twilio/lib/rest/studio/v2/flowValidate.d.ts:41
+     2  node_modules/twilio/lib/rest/trunking/v1/trunk.d.ts:180
+    18  node_modules/twilio/lib/rest/verify/v2/service/verification.d.ts:111
+    11  node_modules/twilio/lib/rest/verify/v2/service/verificationCheck.d.ts:63
+     6  node_modules/twilio/lib/twiml/VoiceResponse.d.ts:1647
+   111  node_modules/typescript/lib/lib.dom.d.ts:1435
+     2  pages/api/users/index.ts:4
+     4  pages/replays/index.tsx:5
+replayadmin@replay-dev:~/twilio-replay$ 

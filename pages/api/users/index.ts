@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 type User = {
-  id: Number(Number)(number);
+  id: number;
   name: string;
   email: string;
   isSuspended: boolean;

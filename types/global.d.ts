@@ -1,25 +1,22 @@
-declare namespace NodeJS {
-  interface ProcessEnv {
-    [key: string]: string | undefined;
+// types/global.d.ts
 
-    // Twilio
-    TWILIO_SID?: string;
-    TWILIO_AUTH?: string;
+export {};
 
-    // NextAuth
-    NEXTAUTH_SECRET?: string;
-    NEXTAUTH_URL?: string;
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      NODE_ENV: 'development' | 'production' | 'test';
+      DATABASE_URL: string;
+      NEXTAUTH_URL: string;
+      NEXTAUTH_SECRET: string;
+      TWILIO_SID?: string;
+      TWILIO_AUTH?: string;
+      ADMIN_EMAIL?: string;
+      ADMIN_PASSWORD?: string;
 
-    // Database
-    DATABASE_URL?: string;
-    DIRECT_URL?: string;
-
-    // Supabase
-    SUPABASE_SERVICE_ROLE_KEY?: string;
-    SUPABASE_JWT_SECRET?: string;
-
-    // Optional
-    SENTRY_DSN?: string;
-    NODE_ENV?: 'development' | 'production' | 'test';
+      SUPABASE_SERVICE_ROLE_KEY?: string;
+      SUPABASE_JWT_SECRET?: string;
+      SENTRY_DSN?: string;
+    }
   }
 }
