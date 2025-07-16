@@ -1,5 +1,22 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
+import { PrismaClient } from '@prisma/client';
+import { hashPassword } from '@/lib/auth';
+
+const globalForPrisma = globalThis as unknown as {
+  prisma?: PrismaClient
+}
+
+export const prisma =
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    log: ['query'], // helpful during dev; remove or limit in prod
+  })
+
+if (process.env.NODE_ENV !== 'production') {
+  globalForPrisma.prisma = prisma
+}
+} from '@/lib/prisma';
 import { hashPassword } from '@/lib/auth';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

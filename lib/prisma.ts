@@ -1,6 +1,6 @@
 // lib/prisma.ts
 import { PrismaClient } from '@prisma/client'
-import '@/types/global';
+import '@/types/global' // Ensures process.env typings are available globally
 
 const globalForPrisma = globalThis as unknown as {
   prisma?: PrismaClient
@@ -9,7 +9,7 @@ const globalForPrisma = globalThis as unknown as {
 export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({
-    log: ['query'], // helpful during dev; remove or limit in prod
+    log: ['query'], // Useful for debugging, remove or limit in production
   })
 
 if (process.env.NODE_ENV !== 'production') {
