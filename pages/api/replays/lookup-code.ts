@@ -15,7 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const replay = await prisma.replay.findFirst({
-      where: { codeInt: Number(parseInt)(code) }
+      where: { codeInt: parseInt(code, 10) }
     });
 
     if (!replay) {

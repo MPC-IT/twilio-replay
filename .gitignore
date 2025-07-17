@@ -31,3 +31,5 @@ db-backup.sql
 .DS_Store
 Thumbs.db
 
+.vercel
+.env*.local
