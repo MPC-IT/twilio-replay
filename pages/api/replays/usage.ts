@@ -33,7 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const usageRecords = await prisma.usage.findMany({
       where: filters,
-      orderBy: { accessedAt: 'desc' },
+      orderBy: { createdAt: 'desc' },
     });
 
     res.status(200).json(usageRecords);
