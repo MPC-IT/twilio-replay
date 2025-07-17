@@ -1,47 +1,69 @@
-// pages/api/upload-replay.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import formidable from 'formidable';
-import fs from 'fs';
-import { uploadReplayRecording } from '@/utils/supabase';
 import { prisma } from '@/lib/prisma';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { IncomingForm } from 'formidable';
+import fs from 'fs';
+import path from 'path';
+import { v4 as uuidv4 } from 'uuid';
 
 export const config = {
-  api: { bodyParser: false },
+  api: {
+    bodyParser: false,
+  },
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const form = new formidable.IncomingForm();
+  const session = await getServerSession(req, res, authOptions);
+
+  if (!session) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'Method Not Allowed' });
+  }
+
+  const form = new IncomingForm();
+  form.uploadDir = path.join(process.cwd(), '/public/recordings');
+  form.keepExtensions = true;
 
   form.parse(req, async (err, fields, files) => {
-    if (err) return res.status(500).json({ error: 'Upload failed' });
+    if (err) {
+      console.error('Form parsing error:', err);
+      return res.status(500).json({ message: 'Error parsing form data' });
+    }
 
-    const replayId = fields.replayId?.toString();
+    const replayId = fields.replayId?.[0];
+    const label = fields.label?.[0] || 'Uploaded';
     const file = files.file?.[0];
 
-    if (!replayId || !file) return res.status(400).json({ error: 'Missing replay ID or file' });
+    if (!replayId || !file) {
+      return res.status(400).json({ message: 'Missing replayId or file' });
+    }
 
-    const buffer = fs.readFileSync(file.filepath);
-    const filename = `${replayId}.mp3`;
+    const ext = path.extname(file.originalFilename || '');
+    const newFilename = `${uuidv4()}${ext}`;
+    const newFilePath = path.join(form.uploadDir, newFilename);
 
     try {
-      const publicUrl = await uploadReplayRecording(buffer, filename);
+      await fs.promises.rename(file.filepath, newFilePath);
 
-      // Save to Recording table
-      await prisma.recording.upsert({
-        where: { replayId: Number(parseInt)(replayId, 10) },
-        update: { url: publicUrl },
-        create: {
-          id: Number(Number)(replayId),
-          replayId: Number(parseInt)(replayId, 10),
-          label: 'Main Conference Recording',
+      const publicUrl = `/recordings/${newFilename}`;
+
+      // ✅ Create a new recording (not upsert)
+      await prisma.recording.create({
+        data: {
+          replayId: Number(replayId),
+          label,
           url: publicUrl,
         },
       });
 
-      return res.status(200).json({ message: 'Upload successful', url: publicUrl });
+      return res.status(200).json({ message: 'Recording uploaded successfully', url: publicUrl });
     } catch (error) {
-      console.error(error);
-      return res.status(500).json({ error: 'Failed to upload to Supabase' });
+      console.error('File save error:', error);
+      return res.status(500).json({ message: 'Failed to save file' });
     }
   });
 }
