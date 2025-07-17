@@ -1,4 +1,5 @@
-// lib/prisma.ts
+// <reference types="node" />
+import { env } from 'process';
 import { PrismaClient } from '@prisma/client'
 
 // Extend globalThis to cache the Prisma instance during development
@@ -14,6 +15,6 @@ export const prisma =
   })
 
 // Cache the Prisma client on the global object in development
-if (process.env.NODE_ENV !== 'production') {
+if (env.NODE_ENV !== 'production') {
   globalForPrisma.prisma = prisma
 }
