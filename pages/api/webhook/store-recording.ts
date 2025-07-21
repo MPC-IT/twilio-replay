@@ -38,7 +38,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (existing) {
       await prisma.usage.update({
-        where: { id: Number(Number)(existing).id },
+        where: { id: Number(existing.id) },
         data: {
           [field]: RecordingUrl,
           updatedAt: new Date(),
