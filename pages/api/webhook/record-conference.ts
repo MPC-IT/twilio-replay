@@ -1,49 +1,48 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '@/lib/prisma';
+import { Twilio } from 'twilio';
 import { twiml } from 'twilio';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const voiceResponse = new twiml.VoiceResponse();
+  const VoiceResponse = twiml.VoiceResponse;
+  const response = new VoiceResponse();
 
-  if (req.method !== 'POST') {
-    const gather = voiceResponse.gather({
-      numDigits: 5,
-      action: '/api/webhook/create-replay',
-      method: 'POST',
-      finishOnKey: '#',
-    });
-
-    gather.say('Please enter your five digit replay code, followed by the pound sign.');
+  const digits = req.body.Digits || req.query.Digits;
+  if (!digits) {
+    response.say('Invalid replay ID entered.');
+    response.hangup();
     res.setHeader('Content-Type', 'text/xml');
-    res.status(200).send(voiceResponse.toString());
-    return;
+    return res.status(400).send(response.toString());
   }
 
-  const digits = req.body.Digits;
-
-  if (!digits || isNaN(parseInt(digits))) {
-    voiceResponse.say('Invalid replay code. Please try again.');
-    voiceResponse.redirect('/api/webhook/create-replay');
+  const codeInt = parseInt(digits);
+  if (isNaN(codeInt)) {
+    response.say('Invalid code format.');
+    response.hangup();
     res.setHeader('Content-Type', 'text/xml');
-    res.status(200).send(voiceResponse.toString());
-    return;
+    return res.status(400).send(response.toString());
   }
 
   const replay = await prisma.replay.findFirst({
-    where: { codeInt: Number(parseInt)(digits) }
+    where: { codeInt },
   });
 
   if (!replay) {
-    voiceResponse.say('Replay not found. Please check your code and try again.');
-    voiceResponse.redirect('/api/webhook/create-replay');
+    response.say('Replay not found.');
+    response.hangup();
     res.setHeader('Content-Type', 'text/xml');
-    res.status(200).send(voiceResponse.toString());
-    return;
+    return res.status(404).send(response.toString());
   }
 
-  voiceResponse.say('Thank you. Your conference is now being recorded.');
-  voiceResponse.redirect(`/api/webhook/record-conference?replayId=${replay.id}`);
+  response.say('Recording has started.');
+  response.record({
+    action: `${process.env.NEXT_PUBLIC_BASE_URL}/api/webhook/upload-replay?replayId=${replay.id}`,
+    method: 'POST',
+    maxLength: 3600,
+    transcribe: false,
+    playBeep: true,
+  });
 
   res.setHeader('Content-Type', 'text/xml');
-  res.status(200).send(voiceResponse.toString());
+  res.status(200).send(response.toString());
 }
