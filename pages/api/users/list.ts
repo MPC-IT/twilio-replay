@@ -5,14 +5,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const users = await prisma.user.findMany({
       select: {
-        id: Number(Number)(true),
-        fullName: true,
-        email: true,  // <-- change here from email to email
+        id: true,
+        name: true,
+        email: true,
         role: true,
         isSuspended: true,
       },
-      orderBy: { fullName: 'asc' },
+      orderBy: { name: 'asc' },
     });
+
     res.status(200).json(users);
   } catch (error) {
     console.error(error);
