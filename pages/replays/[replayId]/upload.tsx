@@ -1,3 +1,4 @@
+// pages/replays/[replayId]/upload.tsx
 import { useRouter } from 'next/router';
 import { useState, FormEvent } from 'react';
 import RequireAuth from '@/components/RequireAuth';
@@ -8,6 +9,7 @@ function UploadPage() {
   const { replayId } = router.query;
 
   const [file, setFile] = useState<File | null>(null);
+  const [label, setLabel] = useState('');
   const [status, setStatus] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
 
@@ -22,22 +24,27 @@ function UploadPage() {
     if (!file || !replayId) return;
 
     const formData = new FormData();
-    formData.append('audio', file);
+    formData.append('file', file);
+    formData.append('replayId', replayId.toString());
+    if (label) formData.append('label', label);
 
     setUploading(true);
     setStatus(null);
 
     try {
-      const res = await fetch(`/api/replays/${replayId}/upload-replay`, {
+      const res = await fetch(`/api/upload-replay`, {
         method: 'POST',
         body: formData,
       });
 
-      if (!res.ok) throw new Error('Upload failed');
-      setStatus('Upload successful!');
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || 'Upload failed');
+      setStatus(`✅ Upload successful: ${json.url}`);
       setFile(null);
-    } catch (err) {
-      setStatus('Upload failed. Please try again.');
+      setLabel('');
+    } catch (err: any) {
+      console.error(err);
+      setStatus(err.message || 'Upload failed. Please try again.');
     } finally {
       setUploading(false);
     }
@@ -46,23 +53,22 @@ function UploadPage() {
   return (
     <div className={styles.container}>
       <h1>Upload Replay Audio</h1>
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <input
-          type="file"
-          accept="audio/*"
-          onChange={handleFileChange}
-          disabled={uploading}
-        />
-        {file && <p>Selected: {file.name}</p>}
+      <form onSubmit={handleSubmit} className={styles.form} encType="multipart/form-data">
+        <label>
+          Audio File (.mp3)
+          <input type="file" accept="audio/mpeg" onChange={handleFileChange} disabled={uploading} />
+        </label>
+
+        <label>
+          Optional Label
+          <input type="text" value={label} onChange={(e) => setLabel(e.target.value)} disabled={uploading} />
+        </label>
 
         <div className={styles.buttons}>
           <button type="submit" disabled={!file || uploading}>
             {uploading ? 'Uploading...' : 'Upload'}
           </button>
-          <button
-            type="button"
-            onClick={() => router.push(`/replays/${replayId}`)}
-          >
+          <button type="button" onClick={() => router.push(`/replays/${replayId}`)}>
             Cancel
           </button>
         </div>
