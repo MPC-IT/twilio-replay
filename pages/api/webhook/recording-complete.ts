@@ -32,6 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await prisma.recording.create({
       data: {
         replayId: Number(replayId),
+	label: 'Conference Recording - ${RecordingSid}',
         audioUrl: `${RecordingUrl}.mp3`,
       },
     });
