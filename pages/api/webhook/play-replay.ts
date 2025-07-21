@@ -41,7 +41,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     where: { replayId: Number(id) },
   });
 
-  if (!recording?.url) {
+  if (!recording?.audioUrl) {
     response.say('The requested replay is not yet available.');
     response.hangup();
     res.setHeader('Content-Type', 'text/xml');
@@ -49,7 +49,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   response.say('Please hold while we play back your replay.');
-  response.play(recording.url);
+  response.play(recording.audioUrl);
   response.say('The replay has ended. Thank you for calling.');
   response.hangup();
 
