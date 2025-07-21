@@ -33,7 +33,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       data: {
         replayId: Number(replayId),
         audioUrl: `${RecordingUrl}.mp3`,
-        transcription: '', // Leave blank for now; can transcribe later
       },
     });
 
