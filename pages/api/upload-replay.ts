@@ -1,6 +1,8 @@
+// pages/api/upload-replay.ts
 import fs from 'fs';
 import path from 'path';
 import { IncomingForm } from 'formidable';
+import { v4 as uuidv4 } from 'uuid';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '@/lib/prisma';
 
@@ -20,7 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     keepExtensions: true,
     filename: (_name, _ext, part) => {
       const ext = path.extname(part.originalFilename || '');
-      return `${Date.now()}-${Math.random().toString(36).substring(2)}${ext}`;
+      return `${uuidv4()}${ext}`;
     },
   });
 
@@ -32,27 +34,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     try {
       const replayIdRaw = fields.replayId?.[0] || fields.replayId;
-      const labelRaw = fields.label?.[0] || fields.label || 'Conference Replay';
       const replayId = Number(replayIdRaw);
+      if (isNaN(replayId)) throw new Error('Invalid replayId');
+
+      const labelRaw = fields.label?.[0] || fields.label;
+      const label = Array.isArray(labelRaw) ? labelRaw[0] : labelRaw || 'Uploaded';
 
       const uploadedFile = Array.isArray(files.file) ? files.file[0] : files.file;
       const filename = path.basename(uploadedFile?.filepath || '');
       const publicUrl = `/recordings/${filename}`;
 
-      if (!replayId || !publicUrl) {
-        return res.status(400).json({ error: 'Missing replayId or file' });
-      }
-
-      // Save new recording
-      const recording = await prisma.recording.create({
+      await prisma.recording.create({
         data: {
           replayId,
-          label: labelRaw,
+          label,
           url: publicUrl,
         },
       });
 
-      res.status(200).json({ message: 'Recording uploaded', url: publicUrl, recording });
+      res.status(200).json({ message: 'Recording uploaded', url: publicUrl });
     } catch (e) {
       console.error('Upload handler error:', e);
       res.status(500).json({ error: 'Internal server error' });
