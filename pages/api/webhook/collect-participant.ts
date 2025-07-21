@@ -1,41 +1,39 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { twiml } from 'twilio';
 import { prisma } from '@/lib/prisma';
- 
+import { twiml } from 'twilio';
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { replayId } = req.query;
- 
-  if (!replayId || typeof replayId !== 'string') {
-    return res.status(400).send('Missing or invalid replay ID');
+  const { Digits, callerId } = req.query;
+  const replayId = parseInt(Digits as string);
+
+  const voiceResponse = new twiml.VoiceResponse();
+
+  try {
+    const replay = await prisma.replay.findFirst({ where: { codeInt: replayId } });
+    if (!replay) throw new Error('Replay not found');
+
+    await prisma.usage.create({
+      data: {
+        replayId: replay.id,
+        callerId: callerId as string,
+        durationSeconds: 0,
+      },
+    });
+
+    voiceResponse.say('Please say your first name after the beep and then press the pound sign.');
+    voiceResponse.record({
+      action: `/api/webhook/record-last-name?Digits=${replayId}&callerId=${encodeURIComponent(callerId as string)}`,
+      method: 'POST',
+      maxLength: 10,
+      finishOnKey: '#',
+    });
+
+    res.setHeader('Content-Type', 'text/xml');
+    res.status(200).send(voiceResponse.toString());
+  } catch (err) {
+    console.error(err);
+    voiceResponse.say('An error occurred. Please try again later.');
+    res.setHeader('Content-Type', 'text/xml');
+    res.status(500).send(voiceResponse.toString());
   }
- 
-  const codeInt = parseInt(replayId, 10);
-  if (isNaN(codeInt)) {
-    return res.status(400).send('Invalid replay ID');
-  }
- 
-  const replay = await prisma.replay.findUnique({
-    where: { code: codeInt },
-  });
- 
-  if (!replay) {
-    return res.status(404).send('Replay not found');
-  }
- 
-  const promptOrder = replay.promptOrder || ['firstName', 'lastName', 'company', 'phone'];
- 
-  // Determine which prompt to collect first based on what's already recorded (optional logic)
-  const stepMap: Record<string, string> = {
-    firstName: 'record-first-name',
-    lastName: 'record-last-name',
-    company: 'record-company',
-    phone: 'record-phone',
-  };
- 
-  const redirectTo = stepMap[promptOrder[0]] || 'record-first-name';
- 
-  const response = new twiml.VoiceResponse();
-  response.redirect(`/api/webhook/${redirectTo}?replayId=${codeInt}`);
-  res.setHeader('Content-Type', 'text/xml');
-  res.status(200).send(response.toString());
 }
