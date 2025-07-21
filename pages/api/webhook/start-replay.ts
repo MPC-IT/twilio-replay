@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const replay = await prisma.replay.findFirst({
-      where: { codeInt: Number(parseInt)(digits) }
+      where: { codeInt: parseInt(digits) }
     });
 
     if (!replay) {
