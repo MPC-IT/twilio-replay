@@ -31,7 +31,7 @@ export default function PublicReplayPage() {
 
   useEffect(() => {
     if (typeof replayId === "string") {
-      fetchReplay(replayId).then(setReplay);
+      fetchReplay(Number(replayId)).then(setReplay);
     }
   }, [replayId]);
 
