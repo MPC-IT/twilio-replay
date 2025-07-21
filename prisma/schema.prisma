@@ -61,7 +61,7 @@ model Prompt {
 
 model Recording {
   id        Int      @id @default(autoincrement())
-  replayId  Int
+  replayId  Int      @unique
   label     String
   url       String
   createdAt DateTime @default(now())
