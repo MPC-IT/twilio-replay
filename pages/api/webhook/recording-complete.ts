@@ -32,7 +32,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await prisma.recording.create({
       data: {
         replayId: Number(replayId),
-        name: `Conference Recording - ${RecordingSid}`,
         audioUrl: `${RecordingUrl}.mp3`,
         transcription: '', // Leave blank for now; can transcribe later
       },
