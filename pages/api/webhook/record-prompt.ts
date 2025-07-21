@@ -14,7 +14,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (stepIndex > 0 && audioUrl && replayCode) {
     await prisma.usage.create({
       data: {
-        replayId: Number(String)(replayCode),
+        replayId: Number(replayCode),
+	callerId: 'unknown',  // or assign a real caller ID if available
         [`caller${capitalize(steps[stepIndex - 1])}`]: audioUrl,
         durationSeconds: 0, // updated later
       },
