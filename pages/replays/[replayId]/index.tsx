@@ -7,7 +7,6 @@ interface Replay {
   title: string;
   startTime?: string;
   endTime?: string;
-  audioUrl?: string;
   prompts: {
     firstName: string;
     lastName: string;
@@ -20,6 +19,7 @@ interface Replay {
     company: boolean;
     phone: boolean;
   };
+  recordings: { id: number; url: string }[];
 }
 
 export default function ReplayEditor() {
@@ -89,8 +89,8 @@ export default function ReplayEditor() {
       const data = await res.json();
       setUploading(false);
 
-      if (res.ok && data.audioUrl) {
-        setReplay({ ...replay, audioUrl: data.audioUrl });
+      if (res.ok && data.recordings) {
+        setReplay({ ...replay, recordings: data.recordings });
       } else {
         alert(data.error || 'Upload failed.');
       }
@@ -101,9 +101,10 @@ export default function ReplayEditor() {
   };
 
   const handleDownload = () => {
-    if (!replay?.audioUrl) return;
+    const firstUrl = replay?.recordings?.[0]?.url;
+    if (!firstUrl) return;
     const link = document.createElement('a');
-    link.href = replay.audioUrl;
+    link.href = firstUrl;
     link.download = 'conference-recording.mp3';
     document.body.appendChild(link);
     link.click();
@@ -160,9 +161,9 @@ export default function ReplayEditor() {
       ))}
 
       <h3 className={styles.subheading}>Conference Recording</h3>
-      {replay.audioUrl ? (
+      {replay.recordings?.length > 0 ? (
         <div>
-          <audio className={styles.audioPlayer} controls src={replay.audioUrl} />
+          <audio className={styles.audioPlayer} controls src={replay.recordings[0].url} />
           <button onClick={handleDownload}>Download</button>
         </div>
       ) : (
