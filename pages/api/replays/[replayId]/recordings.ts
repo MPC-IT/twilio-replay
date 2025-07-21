@@ -1,8 +1,8 @@
-import formidable from 'formidable';
-import fs from 'fs';
 import path from 'path';
+import fs from 'fs';
+import { NextApiRequest, NextApiResponse } from 'next';
+import formidable from 'formidable';
 import { prisma } from '@/lib/prisma';
-import type { NextApiRequest, NextApiResponse } from 'next';
 
 export const config = {
   api: {
@@ -12,42 +12,46 @@ export const config = {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const { replayId } = req.query;
-  if (!replayId || typeof replayId !== 'string') {
-    return res.status(400).json({ error: 'Invalid replay ID' });
-  }
+  const replayId = req.query.replayId as string;
 
-  const form = new formidable.IncomingForm();
-  form.uploadDir = path.join(process.cwd(), 'public', 'recordings');
-  form.keepExtensions = true;
-  form.maxFileSize = 100 * 1024 * 1024; // 100 MB
+  const form = formidable({
+    uploadDir: path.join(process.cwd(), 'public', 'recordings'),
+    keepExtensions: true,
+    maxFileSize: 100 * 1024 * 1024, // 100MB
+  });
 
   form.parse(req, async (err, fields, files) => {
-    if (err || !files.audio || Array.isArray(files.audio)) {
-      return res.status(500).json({ error: 'Failed to upload file' });
+    if (err) {
+      console.error('Upload error:', err);
+      return res.status(500).json({ error: 'Failed to parse form data' });
     }
 
-    const file = files.audio;
-    const filePath = file.filepath || file.path;
-    const filename = `${replayId}.mp3`;
-    const destination = path.join('public', 'recordings', filename);
+    const file = files.audio?.[0] || files.audio;
+    if (!file || Array.isArray(file)) {
+      return res.status(400).json({ error: 'No audio file uploaded' });
+    }
 
-    fs.renameSync(filePath, destination);
+    const filename = path.basename(file.filepath);
     const audioUrl = `/recordings/${filename}`;
 
-    await prisma.recording.upsert({
-      where: { replayId },
-      update: { audioUrl },
-      create: {
-        replayId,
-        name: `Recording for ${replayId}`,
-        audioUrl,
-      },
-    });
+    try {
+      await prisma.recording.upsert({
+        where: { replayId: Number(replayId) },
+        update: { audioUrl },
+        create: {
+          replayId: Number(replayId),
+          audioUrl,
+          name: fields.title?.toString() || 'Uploaded Conference',
+        },
+      });
 
-    return res.status(200).json({ audioUrl });
+      res.status(200).json({ audioUrl });
+    } catch (dbError) {
+      console.error('DB update error:', dbError);
+      res.status(500).json({ error: 'Failed to save recording data' });
+    }
   });
 }
