@@ -50,7 +50,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         data: {
           replayId,
           label,
-          url: publicUrl,
+          audioUrl: publicUrl,
         },
       });
 
