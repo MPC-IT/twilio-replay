@@ -1,38 +1,40 @@
 import { GetServerSideProps } from 'next'
 import { prisma } from '@/lib/prisma'
 
-interface ReplayWithUsages {
+interface ReplayWithUsage {
   id: number
-  code: number 
-  title: string | null
-  createdAt: Date
-  updatedAt: Date
-  usages: {
+  codeInt: number
+  replayId: number
+  title: string
+  createdAt: string
+  updatedAt: string
+  usageRecords: {
     id: number
-    callerId: string | null
-    createdAt: Date
-    firstName: string | null
-    lastName: string | null
-    company: string | null
-    phone: string | null
-    replayId: number
+    callerId: string
+    createdAt: string
+    firstName?: string | null
+    lastName?: string | null
+    company?: string | null
+    phone?: string | null
   }[]
 }
 
 interface Props {
-  replays: ReplayWithUsages[]
+  replays: ReplayWithUsage[]
 }
 
 export default function ReplayListPage({ replays }: Props) {
   return (
-    <div>
+    <div style={{ padding: '2rem' }}>
       <h1>Conference Replays</h1>
-      <ul>
+      <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
         {replays.map((replay) => (
-          <li key={replay.id}>
-            <strong>Replay Code:</strong> {replay.code}<br />
-            <strong>Title:</strong> {replay.title || 'Untitled'}<br />
-            <strong>Usages:</strong> {replay.usages.length}
+          <li key={replay.id} style={{ marginBottom: '2rem', borderBottom: '1px solid #ccc', paddingBottom: '1rem' }}>
+            <p><strong>Replay ID:</strong> {replay.replayId}</p>
+            <p><strong>Replay Code:</strong> {replay.codeInt}</p>
+            <p><strong>Title:</strong> {replay.title}</p>
+            <p><strong>Created:</strong> {new Date(replay.createdAt).toLocaleString()}</p>
+            <p><strong>Usage Records:</strong> {replay.usageRecords.length}</p>
           </li>
         ))}
       </ul>
@@ -43,13 +45,16 @@ export default function ReplayListPage({ replays }: Props) {
 export const getServerSideProps: GetServerSideProps = async () => {
   const replays = await prisma.replay.findMany({
     include: {
-      usages: true,
+      usageRecords: true,
+    },
+    orderBy: {
+      createdAt: 'desc',
     },
   })
 
   return {
     props: {
-      replays: JSON.parse(JSON.stringify(replays)), // removes Date serialization issues
+      replays: JSON.parse(JSON.stringify(replays)),
     },
   }
 }

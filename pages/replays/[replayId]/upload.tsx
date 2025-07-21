@@ -31,7 +31,7 @@ function UploadPage() {
     setStatus(null);
 
     try {
-      const res = await fetch(`/api/replays/${replayID}/upload-replay`, {
+      const res = await fetch(`/api/replays/${replayId}/upload-replay`, {
         method: 'POST',
         body: formData,
       });
