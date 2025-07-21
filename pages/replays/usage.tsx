@@ -6,11 +6,12 @@ import styles from '@/styles/Usage.module.css';
 type UsageRecord = {
   id: number;
   replayId: number;
-  callerName?: string | null;
-  callerCompany?: string | null;
-  callerPhone?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
+  company?: string | null;
+  phone?: string | null;
   durationSeconds: number;
-  accessedAt: string;
+  createdAt: string;
 };
 
 function UsagePage() {
@@ -59,7 +60,7 @@ function UsagePage() {
   const exportToCSV = () => {
     const header = 'Replay ID,Caller Name,Company,Phone,Duration,Accessed At\n';
     const rows = usage.map(u =>
-      `${u.replayId},${u.callerName || ''},${u.callerCompany || ''},${u.callerPhone || ''},${formatDuration(u.durationSeconds)},${new Date(u.accessedAt).toLocaleString()}`
+      `${u.replayId},"${u.firstName ?? ''} ${u.lastName ?? ''}","${u.company ?? ''}","${u.phone ?? ''}",${formatDuration(u.durationSeconds)},"${new Date(u.createdAt).toLocaleString()}"`
     );
     const csvContent = header + rows.join('\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -121,11 +122,11 @@ function UsagePage() {
           <tbody>
             {usage.map((u) => (
               <tr key={u.id}>
-                <td>{u.callerName || '-'}</td>
-                <td>{u.callerCompany || '-'}</td>
-                <td>{u.callerPhone || '-'}</td>
+                <td>{`${u.firstName ?? '-'} ${u.lastName ?? '-'}`}</td>
+                <td>{u.company || '-'}</td>
+                <td>{u.phone || '-'}</td>
                 <td>{formatDuration(u.durationSeconds)}</td>
-                <td>{new Date(u.accessedAt).toLocaleString()}</td>
+                <td>{new Date(u.createdAt).toLocaleString()}</td>
               </tr>
             ))}
           </tbody>

@@ -1,10 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 type PublicUser = {
-  id: number
-  name: string
-  email: string
-  isSuspended: boolean
+  id: number;
+  name: string;
+  email: string;
+  isSuspended: boolean;
 }
 
 export default function handler(

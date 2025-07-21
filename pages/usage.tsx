@@ -1,123 +1,93 @@
 import { useEffect, useState } from 'react';
-import { withAuth } from '@/lib/withAuth';
-import styles from '@/styles/Usage.module.css';
+import { getSession } from 'next-auth/react';
+import RequireAuth from '@/components/RequireAuth';
+import Layout from '@/components/Layout';
+import styles from '@/styles/Replays.module.css';
 
-type UsageEntry = {
+interface UsageRecord {
   id: number;
-  replayCode: number;
-  firstName: string;
-  lastName: string;
-  company: string;
-  phone: string;
-  duration: number;
+  callerId: string;
+  durationSeconds: number;
+  firstName?: string;
+  lastName?: string;
+  company?: string;
+  phone?: string;
   createdAt: string;
-};
+}
 
 function UsagePage() {
-  const [replayCode, setReplayCode] = useState('');
-  const [usage, setUsage] = useState<UsageEntry[]>([]);
-  const [error, setError] = useState('');
+  const [usage, setUsage] = useState<UsageRecord[]>([]);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (!replayCode) return;
-    setError('');
-    fetch(`/api/usage?replayCode=${encodeURIComponent(replayCode)}`)
-      .then(res => {
-        if (!res.ok) throw new Error('Failed to fetch');
-        return res.json();
-      })
-      .then(data => setUsage(data))
-      .catch(() => setError('Unable to load usage data.'));
-  }, [replayCode]);
+  const fetchUsage = async () => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams();
+      if (startDate) params.append('startDate', startDate);
+      if (endDate) params.append('endDate', endDate);
 
-  const downloadCSV = () => {
-    const headers = [
-      'Replay Code',
-      'First Name',
-      'Last Name',
-      'Company',
-      'Phone',
-      'Duration (min)',
-      'Accessed At',
-    ];
-    const rows = usage.map(u => [
-      u.replayCode,
-      u.firstName,
-      u.lastName,
-      u.company,
-      u.phone,
-      (u.duration / 60).toFixed(1),
-      new Date(u.createdAt).toLocaleString(),
-    ]);
-    const csvContent =
-      'data:text/csv;charset=utf-8,' +
-      [headers, ...rows].map(row => row.map(val => `"${val}"`).join(',')).join('\n');
-
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.href = encodedUri;
-    link.download = `usage_report_${replayCode || 'all'}.csv`;
-    link.click();
+      const res = await fetch(`/api/usage?${params.toString()}`);
+      const data = await res.json();
+      setUsage(data);
+    } catch (err) {
+      console.error('Failed to fetch usage', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  useEffect(() => {
+    fetchUsage();
+  }, []);
+
   return (
-    <div className={styles.container}>
-      <h2 className={styles.heading}>Usage Report</h2>
+    <Layout>
+      <div className={styles.container}>
+        <h1>Usage Report</h1>
 
-      <div className={styles.filterRow}>
-        <label className={styles.filterLabel}>
-          Replay Code:{' '}
-          <input
-            type="text"
-            value={replayCode}
-            onChange={e => setReplayCode(e.target.value)}
-            placeholder="Enter replay code"
-            className={styles.input}
-          />
-        </label>
+        <div className={styles.filterRow}>
+          <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
+          <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
+          <button onClick={fetchUsage} disabled={loading}>Filter</button>
+        </div>
 
-        <button
-          onClick={downloadCSV}
-          disabled={!usage.length}
-          className={styles.exportButton}
-        >
-          Export to CSV
-        </button>
-      </div>
-
-      {error && <p className={styles.error}>{error}</p>}
-
-      {usage.length > 0 && (
         <table className={styles.table}>
           <thead>
             <tr>
-              <th>Replay Code</th>
+              <th>Caller ID</th>
+              <th>Duration (sec)</th>
               <th>First Name</th>
               <th>Last Name</th>
               <th>Company</th>
               <th>Phone</th>
-              <th>Duration (min)</th>
-              <th>Accessed At</th>
+              <th>Date</th>
             </tr>
           </thead>
           <tbody>
-            {usage.map(u => (
-              <tr key={u.id}>
-                <td>{u.replayCode}</td>
-                <td>{u.firstName}</td>
-                <td>{u.lastName}</td>
-                <td>{u.company}</td>
-                <td>{u.phone}</td>
-                <td>{(u.duration / 60).toFixed(1)}</td>
-                <td>{new Date(u.createdAt).toLocaleString()}</td>
+            {usage.map((entry) => (
+              <tr key={entry.id}>
+                <td>{entry.callerId}</td>
+                <td>{entry.durationSeconds}</td>
+                <td>{entry.firstName || '-'}</td>
+                <td>{entry.lastName || '-'}</td>
+                <td>{entry.company || '-'}</td>
+                <td>{entry.phone || '-'}</td>
+                <td>{new Date(entry.createdAt).toLocaleString()}</td>
               </tr>
             ))}
           </tbody>
         </table>
-      )}
-    </div>
+      </div>
+    </Layout>
   );
 }
 
-UsagePage.pageTitle = 'Usage Report';
-export default withAuth(UsagePage, ['user', 'admin']);
+export default function ProtectedUsagePage() {
+  return (
+    <RequireAuth>
+      <UsagePage />
+    </RequireAuth>
+  );
+}

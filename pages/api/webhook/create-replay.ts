@@ -1,4 +1,3 @@
-// pages/api/webhook/create-replay.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '@/lib/prisma';
 import { twiml } from 'twilio';
@@ -32,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const replay = await prisma.replay.findFirst({
-    where: { codeInt: Number(parseInt)(digits) }
+    where: { codeInt: Number(digits) }
   });
 
   if (!replay) {
