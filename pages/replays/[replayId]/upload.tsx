@@ -28,7 +28,7 @@ function UploadPage() {
     setStatus(null);
 
     try {
-      const res = await fetch(`/api/replays/${replayId}/upload`, {
+      const res = await fetch(`/api/replays/${replayId}/upload-replay`, {
         method: 'POST',
         body: formData,
       });
@@ -59,10 +59,14 @@ function UploadPage() {
           <button type="submit" disabled={!file || uploading}>
             {uploading ? 'Uploading...' : 'Upload'}
           </button>
-          <button type="button" onClick={() => router.push(`/replays/${replayId}`)}>
+          <button
+            type="button"
+            onClick={() => router.push(`/replays/${replayId}`)}
+          >
             Cancel
           </button>
         </div>
+
         {status && <p>{status}</p>}
       </form>
     </div>
