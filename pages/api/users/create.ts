@@ -18,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const user = await prisma.user.create({
       data: {
-        fullName: name,  // Use fullName, not email
+        name: name,  
         email,           // Add email field here explicitly
         password: hashed,
         role,
