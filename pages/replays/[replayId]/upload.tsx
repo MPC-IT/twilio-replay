@@ -1,4 +1,3 @@
-// pages/replays/[replayId]/upload.tsx
 import { useRouter } from 'next/router';
 import { useState, FormEvent } from 'react';
 import RequireAuth from '@/components/RequireAuth';
@@ -32,7 +31,7 @@ function UploadPage() {
     setStatus(null);
 
     try {
-      const res = await fetch(`/api/upload-replay`, {
+      const res = await fetch(`/api/replays/${replayID}/upload-replay`, {
         method: 'POST',
         body: formData,
       });

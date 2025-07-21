@@ -35,15 +35,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.setHeader('Content-Type', 'text/xml');
     res.status(200).send(voiceResponse.toString());
   } else {
-    // Initial prompt for replay code
+    // ⬇️ Play greeting asset first
+    voiceResponse.play('https://lemon-cattle-5953.twil.io/assets/JPM-Replay-Greeting.mp3');
+
+    // ⬇️ Then gather the 5-digit replay code
     const gather = voiceResponse.gather({
-      numDigits: 10,
+      numDigits: 5,
       action: '/api/webhook/start-replay',
       method: 'POST',
       finishOnKey: '#',
     });
 
-    gather.say('Welcome to the replay system. Please enter your replay pin followed by the pound sign.');
+    gather.say('Please enter your replay pin followed by the pound sign.');
+
+    // Optional: fallback if no input
+    voiceResponse.redirect('/api/webhook/start-replay');
+
     res.setHeader('Content-Type', 'text/xml');
     res.status(200).send(voiceResponse.toString());
   }
