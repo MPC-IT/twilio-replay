@@ -1,4 +1,3 @@
-// pages/api/webhook/recording-complete.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '@/lib/prisma';
 import { twiml } from 'twilio';
@@ -32,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     await prisma.recording.create({
       data: {
-        replayId,
+        replayId: Number(replayId),
         name: `Conference Recording - ${RecordingSid}`,
         audioUrl: `${RecordingUrl}.mp3`,
         transcription: '', // Leave blank for now; can transcribe later
