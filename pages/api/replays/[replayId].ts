@@ -1,57 +1,47 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '@/lib/prisma';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const {
-    query: { replayId },
-    method,
-    body,
-  } = req;
+  const { replayId } = req.query;
+  const id = parseInt(replayId as string);
 
-  const id = parseInt(replayId as string, 10);
-  if (isNaN(id)) {
-    return res.status(400).json({ error: 'Invalid replay ID' });
+  if (req.method === 'GET') {
+    try {
+      const replay = await prisma.replay.findUnique({
+        where: { replayId: id },
+        include: {
+          prompts: true,
+          recordings: true,
+          usageRecords: true,
+        },
+      });
+      if (!replay) return res.status(404).json({ message: 'Replay not found' });
+      res.status(200).json(replay);
+    } catch (err) {
+      res.status(500).json({ message: 'Error fetching replay', error: err });
+    }
   }
 
-  switch (method) {
-    case 'GET':
-      try {
-        const replay = await prisma.replay.findUnique({
-          where: { id },
-          include: {
-            recordings: true,
-            prompts: true,
-          },
-        });
+  else if (req.method === 'PUT') {
+    const { title, startTime, endTime, promptOrder } = req.body;
 
-        if (!replay) return res.status(404).json({ error: 'Replay not found' });
-        return res.status(200).json(replay);
-      } catch (err) {
-        return res.status(500).json({ error: 'Failed to retrieve replay' });
-      }
+    try {
+      const updated = await prisma.replay.update({
+        where: { replayId: id },
+        data: {
+          title,
+          startTime: new Date(startTime),
+          endTime: new Date(endTime),
+          promptOrder,
+        },
+      });
+      res.status(200).json(updated);
+    } catch (err) {
+      res.status(500).json({ message: 'Error updating replay', error: err });
+    }
+  }
 
-    case 'PUT':
-      try {
-        const { title, startTime, endTime, promptOrder } = body;
-
-        const updated = await prisma.replay.update({
-          where: { id },
-          data: {
-            title,
-            startTime: startTime ? new Date(startTime) : undefined,
-            endTime: endTime ? new Date(endTime) : undefined,
-            promptOrder: Array.isArray(promptOrder) ? promptOrder : undefined,
-          },
-        });
-
-        return res.status(200).json(updated);
-      } catch (err) {
-        console.error(err);
-        return res.status(500).json({ error: 'Failed to update replay' });
-      }
-
-    default:
-      res.setHeader('Allow', ['GET', 'PUT']);
-      return res.status(405).end(`Method ${method} Not Allowed`);
+  else {
+    res.status(405).json({ message: 'Method Not Allowed' });
   }
 }
