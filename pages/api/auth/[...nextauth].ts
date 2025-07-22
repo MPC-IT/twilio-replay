@@ -42,15 +42,17 @@ export const authOptions: NextAuthOptions = {
         session.user.isAdmin = token.isAdmin as boolean;
         session.user.isSuspended = token.isSuspended as boolean;
         session.user.name = token.name as string;
+        session.user.email = token.email as string;
       }
       return session;
     },
     async jwt({ token, user }) {
       if (user) {
         token.id = Number(user.id);
-        token.isAdmin = (user as any).isAdmin;
-        token.isSuspended = (user as any).isSuspended;
-        token.name = user.name ?? user.email;
+        token.isAdmin = user.isAdmin;
+        token.isSuspended = user.isSuspended;
+        token.name = user.name ?? user.email ?? "Unnamed";
+        token.email = user.email ?? "unknown@example.com";
       }
       return token;
     },
