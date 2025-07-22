@@ -1,11 +1,10 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs";
- 
-const prisma = new PrismaClient();
- 
-const handler = NextAuth({
+import { compare } from "bcryptjs";
+import prisma from "@/lib/prisma";
+import type { NextAuthOptions } from "next-auth";
+
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -14,45 +13,37 @@ const handler = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error("Missing email or password");
-        }
- 
+        if (!credentials?.email || !credentials?.password) return null;
+
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
- 
-        if (!user) {
-          throw new Error("User not found");
-        }
- 
-        if (user.isSuspended) {
-          throw new Error("Your account has been suspended");
-        }
- 
-        const isValid = await bcrypt.compare(credentials.password, user.password);
-        if (!isValid) {
-          throw new Error("Invalid password");
-        }
- 
+
+        if (!user) return null;
+
+        const isPasswordValid = await compare(credentials.password, user.password);
+        if (!isPasswordValid) return null;
+
+        if (user.isSuspended) return null;
+
         return {
           id: user.id,
           email: user.email,
-          role: user.role,
+          isAdmin: user.isAdmin,
           isSuspended: user.isSuspended,
         };
       },
     }),
   ],
-  pages: {
-    signIn: "/login",
+  session: {
+    strategy: "jwt",
   },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
         token.email = user.email;
-        token.role = user.role;
+        token.isAdmin = user.isAdmin;
         token.isSuspended = user.isSuspended;
       }
       return token;
@@ -60,19 +51,20 @@ const handler = NextAuth({
     async session({ session, token }) {
       if (token) {
         session.user = {
+          ...session.user,
           id: token.id as number,
           email: token.email as string,
-          role: token.role as string,
+          isAdmin: token.isAdmin as boolean,
           isSuspended: token.isSuspended as boolean,
         };
       }
       return session;
     },
   },
-  secret: process.env.NEXTAUTH_SECRET,
-  session: {
-    strategy: "jwt",
+  pages: {
+    signIn: "/login",
   },
-});
- 
-export { handler as GET, handler as POST };
+  secret: process.env.NEXTAUTH_SECRET,
+};
+
+export default NextAuth(authOptions);

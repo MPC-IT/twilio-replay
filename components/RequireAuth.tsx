@@ -1,38 +1,36 @@
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
-type RequireAuthProps = {
-  children: React.ReactNode;
+interface RequireAuthProps {
   adminOnly?: boolean;
-};
+  children: React.ReactNode;
+}
 
-export default function RequireAuth({ children, adminOnly = false }: RequireAuthProps) {
+export default function RequireAuth({ adminOnly, children }: RequireAuthProps) {
   const { data: session, status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    if (status === 'loading') return; // Do nothing while loading
+    if (status === "loading") return;
 
-    if (!session) {
-      router.replace('/login');
+    if (!session?.user) {
+      router.replace("/login");
       return;
     }
 
-    if (adminOnly && session.user?.role !== 'admin') {
-      // Redirect non-admin user trying to access admin page
-      router.replace('/replays');
+    if (session.user.isSuspended) {
+      router.replace("/login?suspended=true");
+      return;
+    }
+
+    if (adminOnly && !session.user.isAdmin) {
+      router.replace("/replays");
       return;
     }
   }, [session, status, router, adminOnly]);
 
-  if (status === 'loading' || !session) {
-    return <p>Loading...</p>;
-  }
-
-  if (adminOnly && session.user?.role !== 'admin') {
-    return <p>Access denied</p>;
-  }
+  if (status === "loading" || !session?.user) return null;
 
   return <>{children}</>;
 }
