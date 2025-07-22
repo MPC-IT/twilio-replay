@@ -3,32 +3,28 @@ import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
-async function main() {
+export async function runSeed() {
   const passwordHash = await bcrypt.hash('woctemp205', 10);
 
-  // Create Admin User
-  await prisma.user.create({
-    data: {
-      name: 'Leesa Moore',
-      email: 'leesa@multipointcom.com',
-      password: passwordHash,
-      role: 'ADMIN',
-      isSuspended: false,
-    },
+  await prisma.user.createMany({
+    data: [
+      {
+        name: 'Leesa Moore',
+        email: 'leesa@multipointcom.com',
+        password: passwordHash,
+        role: 'ADMIN',
+        isSuspended: false,
+      },
+      {
+        name: 'Ashley Files',
+        email: 'ashley@multipointcom.com',
+        password: passwordHash,
+        role: 'USER',
+        isSuspended: false,
+      },
+    ],
   });
 
-  // Create Basic User
-  await prisma.user.create({
-    data: {
-      name: 'Ashley Files',
-      email: 'ashley@multipointcom.com',
-      password: passwordHash,
-      role: 'USER',
-      isSuspended: false,
-    },
-  });
-
-  // Create a Replay
   await prisma.replay.create({
     data: {
       id: '12345',
@@ -37,13 +33,12 @@ async function main() {
       replayId: '12345',
       title: 'Weekly Sales Recap',
       startTime: new Date(),
-      endTime: new Date(Date.now() + 3600000), // 1 hour later
+      endTime: new Date(Date.now() + 3600000),
       notes: 'Review of Q2 performance',
       createdBy: 'leesa@multipointcom.com',
     },
   });
 
-  // Add a Recording
   await prisma.recording.create({
     data: {
       replayId: 12345,
@@ -53,7 +48,6 @@ async function main() {
     },
   });
 
-  // Add Usage
   await prisma.usage.create({
     data: {
       replayId: 12345,
@@ -65,13 +59,6 @@ async function main() {
       phoneUrl: 'https://example.com/phone.wav',
     },
   });
-}
 
-main()
-  .catch(e => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+  await prisma.$disconnect();
+}
