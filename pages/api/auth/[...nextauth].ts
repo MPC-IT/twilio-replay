@@ -47,7 +47,7 @@ export const authOptions: NextAuthOptions = {
     },
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
+        token.id = Number(user.id);
         token.isAdmin = (user as any).isAdmin;
         token.isSuspended = (user as any).isSuspended;
         token.name = user.name;
