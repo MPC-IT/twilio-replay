@@ -1,5 +1,4 @@
-// lib/auth.ts
-import bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcryptjs';
 
 export function hashPassword(password: string): Promise<string> {
   return new Promise((resolve, reject) => {
