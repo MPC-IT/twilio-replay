@@ -2,7 +2,7 @@ import { NextAuthOptions } from 'next-auth';
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { prisma } from '@/lib/prisma';
-import * as bcrypt from 'bcryptjs';
+import bcrypt from 'bcryptjs';
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -24,7 +24,7 @@ export const authOptions: NextAuthOptions = {
 
         if (!user || !user.password || user.isSuspended) return null;
 
-        const isValid = bcryptjs.compareSync(credentials.password, user.password);
+        const isValid = await bcrypt.compare(credentials.password, user.password);
         if (!isValid) return null;
 
         return {
