@@ -5,8 +5,8 @@ declare module 'next-auth' {
   interface Session {
     user: {
       id: number;
-      email: string;
-      name?: string;
+      name?: string | null;
+      email?: string | null;
       isAdmin: boolean;
       isSuspended: boolean;
     } & DefaultSession['user'];
@@ -14,8 +14,6 @@ declare module 'next-auth' {
 
   interface User extends DefaultUser {
     id: number;
-    email: string;
-    name?: string;
     isAdmin: boolean;
     isSuspended: boolean;
   }
@@ -24,8 +22,8 @@ declare module 'next-auth' {
 declare module 'next-auth/jwt' {
   interface JWT {
     id: number;
-    email?: string;
-    name?: string;
+    name?: string | null;
+    email?: string | null;
     isAdmin: boolean;
     isSuspended: boolean;
   }
