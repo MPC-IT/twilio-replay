@@ -18,8 +18,11 @@ export const authOptions: AuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
+        console.log('🔐 Login attempt:', credentials?.email);
+
         if (!credentials?.email || !credentials?.password) {
-          throw new Error('Missing credentials');
+          console.log('⛔ Missing email or password');
+          return null;
         }
 
         const user = await prisma.user.findUnique({
@@ -27,19 +30,24 @@ export const authOptions: AuthOptions = {
         });
 
         if (!user || !user.password) {
-          throw new Error('Invalid login');
+          console.log('⛔ User not found or no password set');
+          return null;
         }
 
         const isValid = await verifyPassword(credentials.password, user.password);
+        console.log('🔑 Password valid:', isValid);
 
         if (!isValid) {
-          throw new Error('Invalid login');
+          console.log('⛔ Invalid password for:', credentials.email);
+          return null;
         }
 
+        console.log('✅ Login successful for:', user.email);
+
         return {
-          id: Number(String(user.id)),
+          id: Number(user.id),
           email: user.email,
-          name: user.name || '', // ✅ FIXED: replaced fullName with name
+          name: user.name || '',
           isAdmin: user.isAdmin,
           isSuspended: user.isSuspended,
         };
