@@ -4,6 +4,8 @@ import { SessionProvider } from 'next-auth/react';
 import Layout from '@/components/Layout';
 import { Toaster } from 'react-hot-toast';
 import { supabase } from '@/utils/supabase'; // ✅ Your Supabase client (safe to import)
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export default function App({
   Component,

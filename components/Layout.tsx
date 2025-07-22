@@ -1,8 +1,6 @@
 import { signOut, useSession } from 'next-auth/react';
 import styles from '@/styles/Layout.module.css';
 import Footer from './Footer';
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 
 interface LayoutProps {
   children: React.ReactNode;
