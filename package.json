@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "prisma generate && next build",
     "start": "next start",
-    "seed": "ts-node --project tsconfig.seed.json prisma/seed.ts",
+    "seed": "ts-node prisma/seed.ts",
     "test": "jest",
     "find-deadcode": "ts-prune"
   },

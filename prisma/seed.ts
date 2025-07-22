@@ -1,59 +1,77 @@
-// prisma/seed.ts (CommonJS version)
-const { PrismaClient } = require('@prisma/client');
-const bcrypt = require('bcryptjs');
+import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
 async function main() {
-  const email = 'leesa@multipointcom.com';
-  const password = 'woctemp205';
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const passwordHash = await bcrypt.hash('woctemp205', 10);
 
-  const existingUser = await prisma.user.findUnique({
-    where: { email },
+  // Create Admin User
+  await prisma.user.create({
+    data: {
+      name: 'Leesa Moore',
+      email: 'leesa@multipointcom.com',
+      password: passwordHash,
+      role: 'ADMIN',
+      isSuspended: false,
+    },
   });
 
-  if (!existingUser) {
-    await prisma.user.create({
-      data: {
-        email,
-        password: hashedPassword,
-        fullName: 'Leesa Moore',
-        role: 'admin',
-        isAdmin: true,
-        suspended: false,
-      },
-    });
-    console.log('✅ Admin user created');
-  } else {
-    console.log('ℹ️ Admin user already exists');
-  }
-
-  const codeInt = 123456;
-  const existingReplay = await prisma.replay.findUnique({
-    where: { codeInt },
+  // Create Basic User
+  await prisma.user.create({
+    data: {
+      name: 'Ashley Files',
+      email: 'ashley@multipointcom.com',
+      password: passwordHash,
+      role: 'USER',
+      isSuspended: false,
+    },
   });
 
-  if (!existingReplay) {
-    await prisma.replay.create({
-      data: {
-        code: String(codeInt),
-        codeInt,
-        title: 'Demo Replay',
-        startTime: new Date(),
-        endTime: null,
-        createdBy: Number(email),
-      },
-    });
-    console.log('✅ Demo replay created');
-  } else {
-    console.log('ℹ️ Demo replay already exists');
-  }
+  // Create a Replay
+  await prisma.replay.create({
+    data: {
+      id: '12345',
+      code: '12345',
+      codeInt: 12345,
+      replayId: '12345',
+      title: 'Weekly Sales Recap',
+      startTime: new Date(),
+      endTime: new Date(Date.now() + 3600000), // 1 hour later
+      notes: 'Review of Q2 performance',
+      createdBy: 'leesa@multipointcom.com',
+    },
+  });
+
+  // Add a Recording
+  await prisma.recording.create({
+    data: {
+      replayId: 12345,
+      name: 'Conference Recording - ABC123',
+      audioUrl: '/recordings/12345.mp3',
+      transcription: '',
+    },
+  });
+
+  // Add Usage
+  await prisma.usage.create({
+    data: {
+      replayId: 12345,
+      callerId: '+12055551234',
+      durationSeconds: 145,
+      firstNameUrl: 'https://example.com/first.wav',
+      lastNameUrl: 'https://example.com/last.wav',
+      companyUrl: 'https://example.com/company.wav',
+      phoneUrl: 'https://example.com/phone.wav',
+    },
+  });
 }
 
 main()
-  .catch((err) => {
-    console.error('❌ Seed failed:', err);
+  .catch(e => {
+    console.error(e);
     process.exit(1);
   })
-  .finally(() => prisma.$disconnect());
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
