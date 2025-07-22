@@ -1,6 +1,5 @@
-import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { compare } from "bcryptjs";
+import { compareSync } from "bcryptjs";
 import prisma from "@/lib/prisma";
 import type { NextAuthOptions } from "next-auth";
 
@@ -21,7 +20,7 @@ export const authOptions: NextAuthOptions = {
 
         if (!user) return null;
 
-        const isPasswordValid = await compare(credentials.password, user.password);
+        const isPasswordValid = compareSync(credentials.password, user.password);
         if (!isPasswordValid) return null;
 
         if (user.isSuspended) return null;
@@ -29,42 +28,38 @@ export const authOptions: NextAuthOptions = {
         return {
           id: user.id,
           email: user.email,
+          name: user.name ?? user.email,
           isAdmin: user.isAdmin,
           isSuspended: user.isSuspended,
         };
       },
     }),
   ],
-  session: {
-    strategy: "jwt",
-  },
   callbacks: {
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as number;
+        session.user.isAdmin = token.isAdmin as boolean;
+        session.user.isSuspended = token.isSuspended as boolean;
+        session.user.name = token.name as string;
+      }
+      return session;
+    },
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.email = user.email;
-        token.isAdmin = user.isAdmin;
-        token.isSuspended = user.isSuspended;
+        token.isAdmin = (user as any).isAdmin;
+        token.isSuspended = (user as any).isSuspended;
+        token.name = user.name;
       }
       return token;
-    },
-    async session({ session, token }) {
-      if (token) {
-        session.user = {
-          ...session.user,
-          id: token.id as number,
-          email: token.email as string,
-          isAdmin: token.isAdmin as boolean,
-          isSuspended: token.isSuspended as boolean,
-        };
-      }
-      return session;
     },
   },
   pages: {
     signIn: "/login",
   },
+  session: {
+    strategy: "jwt",
+  },
   secret: process.env.NEXTAUTH_SECRET,
 };
-
-export default NextAuth(authOptions);

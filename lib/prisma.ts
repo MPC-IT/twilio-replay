@@ -1,4 +1,3 @@
-// <reference types="node" />
 import { env } from 'process';
 import { PrismaClient } from '@prisma/client'
 
