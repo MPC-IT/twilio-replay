@@ -50,7 +50,7 @@ export const authOptions: NextAuthOptions = {
         token.id = Number(user.id);
         token.isAdmin = (user as any).isAdmin;
         token.isSuspended = (user as any).isSuspended;
-        token.name = user.name;
+        token.name = user.name ?? user.email;
       }
       return token;
     },
