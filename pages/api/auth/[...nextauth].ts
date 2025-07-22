@@ -28,7 +28,7 @@ export const authOptions: NextAuthOptions = {
         if (!isValid) return null;
 
         return {
-          id: user.id.toString(),
+          id: user.id, // ✅ keep as number
           email: user.email,
           name: user.name,
           isAdmin: user.isAdmin,
