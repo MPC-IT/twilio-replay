@@ -1,15 +1,15 @@
-import CredentialsProvider from "next-auth/providers/credentials";
-import { compareSync } from "bcryptjs";
-import { prisma } from "@/lib/prisma";
-import type { NextAuthOptions } from "next-auth";
+import NextAuth from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { compare } from 'bcryptjs';
+import { prisma } from '@/lib/prisma';
 
-export const authOptions: NextAuthOptions = {
+export const authOptions = {
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: 'Credentials',
       credentials: {
-        email: { label: "Email", type: "text" },
-        password: { label: "Password", type: "password" },
+        email: { label: 'Email', type: 'text' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
@@ -18,52 +18,44 @@ export const authOptions: NextAuthOptions = {
           where: { email: credentials.email },
         });
 
-        if (!user) return null;
+        if (!user || !user.password || user.isSuspended) return null;
 
-        const isPasswordValid = compareSync(credentials.password, user.password);
-        if (!isPasswordValid) return null;
-
-        if (user.isSuspended) return null;
+        const isValid = await compare(credentials.password, user.password);
+        if (!isValid) return null;
 
         return {
           id: user.id,
+          name: user.name,
           email: user.email,
-          name: user.name ?? user.email,
           isAdmin: user.isAdmin,
-          isSuspended: user.isSuspended,
         };
       },
     }),
   ],
+  pages: {
+    signIn: '/login',
+    error: '/api/auth/error',
+  },
   callbacks: {
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as number;
         session.user.isAdmin = token.isAdmin as boolean;
-        session.user.isSuspended = token.isSuspended as boolean;
-        session.user.name = token.name as string;
-        session.user.email = token.email as string;
       }
       return session;
     },
     async jwt({ token, user }) {
       if (user) {
-        token.id = Number(user.id);
+        token.id = user.id;
         token.isAdmin = user.isAdmin;
-        token.isSuspended = user.isSuspended;
-        token.name = user.name ?? user.email ?? "Unnamed";
-        token.email = user.email ?? "unknown@example.com";
       }
       return token;
     },
   },
-  pages: {
-    signIn: "/login",
-  },
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
 
-export default NextAuth(authOptions);
+export default NextAuth(authOptions); // ✅ REQUIRED
