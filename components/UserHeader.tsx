@@ -20,7 +20,7 @@ export default function UserHeader({ title }: { title: string }) {
     >
       <h1 style={{ margin: 0, fontSize: "1.5rem" }}>{title}</h1>
       <div style={{ fontSize: "0.9rem" }}>
-        Welcome, {user.fullName || user.email}
+        Welcome, {user.name || user.email}
         {user.isAdmin && " (Admin)"} |{" "}
         <button
           onClick={() => signOut()}
