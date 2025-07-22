@@ -1,18 +1,22 @@
-import NextAuth from 'next-auth';
+import { NextAuthOptions } from 'next-auth';
+import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { prisma } from '@/lib/prisma';
-import * as bcrypt from 'bcryptjs';
+import bcryptjs from 'bcryptjs';
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
+  session: {
+    strategy: 'jwt',
+  },
   providers: [
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        email: { label: 'Email', type: 'text' },
+        email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials) {
-        if (!credentials?.email || !credentials.password) return null;
+      authorize: async (credentials) => {
+        if (!credentials?.email || !credentials?.password) return null;
 
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
@@ -20,46 +24,40 @@ export const authOptions = {
 
         if (!user || !user.password || user.isSuspended) return null;
 
-        const isValid = await bcrypt.compare(
-          credentials.password,
-          user.password
-        );
-
+        const isValid = bcryptjs.compareSync(credentials.password, user.password);
         if (!isValid) return null;
 
-        // Omit password before returning
-        const { password, ...safeUser } = user;
-        return safeUser;
+        return {
+          id: user.id.toString(),
+          email: user.email,
+          name: user.name,
+          isAdmin: user.isAdmin,
+          isSuspended: user.isSuspended,
+        };
       },
     }),
   ],
-  pages: {
-    signIn: '/login',
-  },
-  session: {
-    strategy: 'jwt',
-  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.name = user.name;
-        token.email = user.email;
         token.isAdmin = user.isAdmin;
+        token.isSuspended = user.isSuspended;
       }
       return token;
     },
     async session({ session, token }) {
       if (token) {
         session.user.id = token.id;
-        session.user.name = token.name;
-        session.user.email = token.email;
         session.user.isAdmin = token.isAdmin;
+        session.user.isSuspended = token.isSuspended;
       }
       return session;
     },
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  pages: {
+    signIn: '/login',
+  },
 };
 
 export default NextAuth(authOptions);
