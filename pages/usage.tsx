@@ -43,7 +43,7 @@ function UsagePage() {
   }, []);
 
   return (
-    <Layout>
+    <Layout pageTitle="Usage Report">
       <div className={styles.container}>
         <h1>Usage Report</h1>
 
