@@ -5,9 +5,7 @@ import { prisma } from '@/lib/prisma';
 import * as bcryptjs from 'bcryptjs';
 
 export const authOptions: NextAuthOptions = {
-  session: {
-    strategy: 'jwt',
-  },
+  session: { strategy: 'jwt' },
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -24,11 +22,11 @@ export const authOptions: NextAuthOptions = {
 
         if (!user || !user.password || user.isSuspended) return null;
 
-        const isValid = await bcryptjs.compare(credentials.password, user.password);
+        const isValid = bcryptjs.compareSync(credentials.password, user.password);
         if (!isValid) return null;
 
         return {
-          id: user.id, // ✅ keep as number
+          id: user.id,
           email: user.email,
           name: user.name,
           isAdmin: user.isAdmin,
@@ -40,14 +38,14 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = Number(user.id);
+        token.id = user.id;
         token.isAdmin = user.isAdmin;
         token.isSuspended = user.isSuspended;
       }
       return token;
     },
     async session({ session, token }) {
-      if (token) {
+      if (token && session.user) {
         session.user.id = token.id;
         session.user.isAdmin = token.isAdmin;
         session.user.isSuspended = token.isSuspended;
