@@ -39,6 +39,29 @@
   background-color: #f9f9f9;
 }
 
+.inputField {
+  width: 100%;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.85rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: inherit;
+}
+
+.inactiveRow {
+  background-color: #f8f8f8;
+  color: #999;
+}
+
+.activeRow {
+  background-color: #ffffff;
+}
+
+.rowHighlight {
+  outline: 2px solid #8fa4ff;
+  background-color: #eef1ff;
+}
+
 .actionButton {
   background-color: #242a78;
   color: white;
@@ -47,10 +70,27 @@
   font-size: 0.85rem;
   border-radius: 4px;
   cursor: pointer;
+  margin-right: 0.5rem;
 }
 
 .actionButton:hover {
   background-color: #1a1f5f;
+}
+
+.saveButton {
+  background-color: #1e8e3e;
+}
+
+.saveButton:hover {
+  background-color: #156e30;
+}
+
+.cancelButton {
+  background-color: #888;
+}
+
+.cancelButton:hover {
+  background-color: #666;
 }
 
 .error {

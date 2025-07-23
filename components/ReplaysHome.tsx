@@ -16,7 +16,6 @@ export default function ReplaysHome() {
         {isAdmin && (
           <>
             <li><Link href="/replays/users">Manage Users</Link></li>
-            <li><Link href="/replays/branding">Manage Branded Greetings</Link></li>
           </>
         )}
       </ul>
