@@ -1,7 +1,12 @@
 import { GetServerSideProps } from 'next';
 import { prisma } from '@/lib/prisma';
+import { User } from '@prisma/client';
 
-export default function DebugUsers({ users }) {
+interface DebugUsersProps {
+  users: User[];
+}
+
+export default function DebugUsers({ users }: DebugUsersProps) {
   return (
     <div>
       <h1>Debug: User Table</h1>
