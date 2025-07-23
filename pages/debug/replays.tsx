@@ -15,7 +15,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     include: {
       prompts: true,
       recordings: true,
-      usage: true,
+      usageRecords: true,
     },
   })
   return { props: { replays } }
