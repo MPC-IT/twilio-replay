@@ -16,12 +16,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).send(response.toString());
   }
 
-  const replay = await prisma.replay.findFirst({
+  const replay = await prisma.replay.findUnique({
     where: { codeInt },
-    include: { recordings: true },
+    include: { 
+      recordings: true, 
+    },
   });
 
-  const recording = replay?.recordings?.[0];
+  const recording: { audioUrl: string } | undefined = replay?.recordings?.[0];
 
   if (!recording?.audioUrl) {
     response.say('The requested replay is not yet available.');
