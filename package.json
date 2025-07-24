@@ -1,7 +1,7 @@
 {
   "name": "twilio-replay",
   "version": "1.0.0",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
@@ -20,6 +20,7 @@
     "@vercel/speed-insights": "^1.2.0",
     "bcryptjs": "^3.0.2",
     "date-fns": "^4.1.0",
+    "file-saver": "^2.0.5",
     "formidable": "^3.5.4",
     "multer": "^2.0.1",
     "next": "15.3.3",

@@ -4,15 +4,10 @@ import styles from '@/styles/ReplayDetail.module.css';
 
 interface Replay {
   id: number;
+  codeInt: number;
   title: string;
   startTime?: string;
   endTime?: string;
-  prompts: {
-    firstName: string;
-    lastName: string;
-    company: string;
-    phone: string;
-  };
   promptFlags: {
     firstName: boolean;
     lastName: boolean;
@@ -43,14 +38,11 @@ export default function ReplayEditor() {
     if (!replay) return;
     const { name, value, type, checked } = e.target;
 
-    if (name.startsWith('prompts.')) {
-      const key = name.split('.')[1] as keyof Replay['prompts'];
-      setReplay({ ...replay, prompts: { ...replay.prompts, [key]: value } });
-    } else if (name.startsWith('promptFlags.')) {
+    if (name.startsWith('promptFlags.')) {
       const key = name.split('.')[1] as keyof Replay['promptFlags'];
       setReplay({ ...replay, promptFlags: { ...replay.promptFlags, [key]: checked } });
     } else {
-      setReplay({ ...replay, [name]: value });
+      setReplay({ ...replay, [name]: type === 'number' ? Number(value) : value });
     }
   };
 
@@ -118,6 +110,16 @@ export default function ReplayEditor() {
       <h2 className={styles.title}>{replay.title}</h2>
 
       <label className={styles.label}>
+        Replay Code:
+        <input
+          type="number"
+          name="codeInt"
+          value={replay.codeInt}
+          onChange={handleChange}
+        />
+      </label>
+
+      <label className={styles.label}>
         Start Time:
         <input
           type="datetime-local"
@@ -138,26 +140,21 @@ export default function ReplayEditor() {
       </label>
 
       <h3 className={styles.subheading}>Caller Prompts</h3>
-      {['firstName', 'lastName', 'company', 'phone'].map((key) => (
-        <div key={key} className={styles.promptRow}>
-          <label>
-            <input
-              type="checkbox"
-              name={`promptFlags.${key}`}
-              checked={replay.promptFlags?.[key as keyof Replay['promptFlags']]}
-              onChange={handleChange}
-            />
-            &nbsp;Enable {key.charAt(0).toUpperCase() + key.slice(1)} Prompt
-          </label>
+      {[
+        { key: 'firstName', label: '1. State and spell your first name (firstName.wav)' },
+        { key: 'lastName', label: '2. State and spell your last name (lastName.wav)' },
+        { key: 'company', label: '3. State and spell your company name (company.wav)' },
+        { key: 'phone', label: '4. State your phone number (phone.wav)' },
+      ].map(({ key, label }) => (
+        <label key={key} className={styles.label}>
           <input
-            type="text"
-            name={`prompts.${key}`}
-            placeholder={`${key.charAt(0).toUpperCase() + key.slice(1)} Prompt`}
-            value={replay.prompts?.[key as keyof Replay['prompts']] || ''}
+            type="checkbox"
+            name={`promptFlags.${key}`}
+            checked={replay.promptFlags?.[key as keyof Replay['promptFlags']]}
             onChange={handleChange}
-            disabled={!replay.promptFlags?.[key as keyof Replay['promptFlags']]}
           />
-        </div>
+          &nbsp;{label}
+        </label>
       ))}
 
       <h3 className={styles.subheading}>Conference Recording</h3>

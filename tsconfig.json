@@ -31,5 +31,5 @@
     "types",
     ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules", "prisma"]
+  "exclude": ["node_modules", "**/*.d.ts"]
 }
