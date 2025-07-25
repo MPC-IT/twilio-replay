@@ -32,6 +32,11 @@
   margin-top: 1rem;
 }
 
+.uploadInput {
+  margin-top: 0.5rem;
+  display: block;
+}
+
 .audioPlayer {
   display: block;
   margin-top: 0.5rem;
@@ -61,4 +66,18 @@
 .error {
   color: red;
   font-weight: bold;
+}
+
+.downloadButton {
+  margin-top: 0.5rem;
+  background-color: #ddd;
+  border: none;
+  padding: 0.4rem 1rem;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.downloadButton:hover {
+  background-color: #ccc;
 }

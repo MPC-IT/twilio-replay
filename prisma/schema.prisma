@@ -24,23 +24,31 @@ model User {
 }
 
 model Replay {
-  id           Int        @id @default(autoincrement())
-  code         Int
-  codeInt      Int        @unique
-  replayId     Int        @unique
-  title        String
-  startTime    DateTime
-  endTime      DateTime
-  notes        String?
-  createdBy    Int
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
-  promptOrder  String[]   @default(["firstName", "lastName", "company", "phone"])
-  company      String?
-  prompts      Prompt[]
-  recordings   Recording?
-  user         User       @relation(fields: [createdBy], references: [id])
-  usageRecords Usage[]
+  id                        Int        @id @default(autoincrement())
+  code                      Int
+  codeInt                   Int        @unique
+  replayId                  Int        @unique
+  title                     String
+  startTime                 DateTime
+  endTime                   DateTime
+  notes                     String?
+  createdBy                 Int
+  createdAt                 DateTime   @default(now())
+  updatedAt                 DateTime   @updatedAt
+  promptOrder               String[]   @default(["firstName", "lastName", "company", "phone"])
+  company                   String?
+
+  // ✅ Prompt flags
+  firstNamePromptEnabled    Boolean    @default(false)
+  lastNamePromptEnabled     Boolean    @default(false)
+  companyPromptEnabled      Boolean    @default(false)
+  phonePromptEnabled        Boolean    @default(false)
+
+  // ✅ Relationships
+  prompts                   Prompt[]
+  recordings                Recording? // one-to-one
+  user                      User       @relation(fields: [createdBy], references: [id])
+  usageRecords              Usage[]
 
   @@map("Replay")
 }
@@ -54,6 +62,7 @@ model Prompt {
   updatedAt DateTime @updatedAt
   replay    Replay   @relation(fields: [replayId], references: [id])
 
+  @@unique([replayId, type], name: "replayId_type")
   @@map("Prompt")
 }
 
@@ -61,9 +70,11 @@ model Recording {
   id        Int      @id @default(autoincrement())
   replayId  Int      @unique
   label     String
+  audioUrl  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  audioUrl  String
+
+  // ✅ Link back to Replay
   replay    Replay   @relation(fields: [replayId], references: [id])
 
   @@map("Recording")

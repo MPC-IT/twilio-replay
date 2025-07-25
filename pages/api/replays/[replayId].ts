@@ -23,18 +23,32 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   else if (req.method === 'PUT') {
-    const { title, startTime, endTime, promptOrder } = req.body;
+    const {
+      title,
+      startTime,
+      endTime,
+      promptOrder,
+      firstNamePromptEnabled,
+      lastNamePromptEnabled,
+      companyPromptEnabled,
+      phonePromptEnabled,
+    } = req.body;
 
     try {
       const updated = await prisma.replay.update({
         where: { replayId: id },
         data: {
           title,
-          startTime: new Date(startTime),
-          endTime: new Date(endTime),
+          startTime: startTime ? new Date(startTime) : null,
+          endTime: endTime ? new Date(endTime) : null,
           promptOrder,
+          firstNamePromptEnabled,
+          lastNamePromptEnabled,
+          companyPromptEnabled,
+          phonePromptEnabled,
         },
       });
+
       res.status(200).json(updated);
     } catch (err) {
       res.status(500).json({ message: 'Error updating replay', error: err });
