@@ -63,7 +63,7 @@ export default function ReplayListPage({ replays }: Props) {
                 />
               </td>
               <td>
-                <Link className={styles.button} href={`/replays/${replay.id}`}>
+                <Link className={styles.button} href={`/replays/${replay.codeInt}`}>
                   Edit
                 </Link>
               </td>

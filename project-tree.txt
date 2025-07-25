@@ -1,208 +1,195 @@
 /home/replayadmin/twilio-replay
 ├── components
+│   ├── admin
+│   │   └── ReplayDetails.tsx
+│   ├── Footer.tsx
+│   ├── Layout.tsx
+│   ├── replays
+│   │   ├── ReplayPromptsFormPage.tsx
+│   │   └── ReplayPromptsForm.tsx
+│   ├── ReplaysHome.tsx
+│   ├── RequireAuth.tsx
+│   ├── UploadReplayForm.tsx
+│   ├── UploadReplayRecording.tsx
+│   └── UserHeader.tsx
 ├── data
-├── Dockerfile
+│   └── mockReplays.ts
 ├── .dockerignore
 ├── .env
 ├── .env.local.bkup
 ├── .eslintrc.generated.json
-├── .git
 ├── .github
+│   └── workflows
+│       └── deploy.yml
 ├── .gitignore
 ├── lib
+│   ├── auth.ts
+│   ├── bcrypt.ts
+│   ├── prisma.js
+│   ├── prisma.ts
+│   ├── validate-env.ts
+│   └── withAuth.tsx
 ├── middleware.ts
 ├── .next
+│   └── cache
+│       ├── .rscinfo
+│       ├── swc
+│       │   └── plugins
+│       ├── .tsbuildinfo
+│       └── webpack
+│           ├── client-production
+│           ├── edge-server-production
+│           └── server-production
 ├── next.config.js
 ├── next-env.d.ts
-├── node_modules
 ├── package.json
 ├── package-lock.json
 ├── pages
+│   ├── 404.tsx
+│   ├── admin
+│   │   └── users.tsx
+│   ├── api
+│   │   ├── admin
+│   │   │   └── users.ts
+│   │   ├── auth
+│   │   │   └── [...nextauth].ts
+│   │   ├── cron.ts
+│   │   ├── prompts
+│   │   │   ├── audiofiles.ts
+│   │   │   └── upload.ts
+│   │   ├── replays
+│   │   │   ├── index.ts
+│   │   │   ├── lookup-code.ts
+│   │   │   ├── [replayId]
+│   │   │   ├── [replayId].ts
+│   │   │   └── usage.ts
+│   │   ├── upload-replay.ts
+│   │   ├── usage
+│   │   │   └── [usageId].ts
+│   │   ├── usage.ts
+│   │   ├── users
+│   │   │   ├── create.ts
+│   │   │   ├── index.ts
+│   │   │   ├── list.ts
+│   │   │   ├── [replayId]
+│   │   │   ├── reset-password.ts
+│   │   │   └── toggle-status.ts
+│   │   ├── voice
+│   │   └── webhook
+│   │       ├── collect-participant.ts
+│   │       ├── create-replay.ts
+│   │       ├── play-replay.ts
+│   │       ├── record-company.ts
+│   │       ├── record-conference.ts
+│   │       ├── recording-complete.ts
+│   │       ├── record-last-name.ts
+│   │       ├── record-phone.ts
+│   │       ├── record-prompt.ts
+│   │       ├── start-replay.ts
+│   │       ├── store-recording.ts
+│   │       └── upload-replay.ts
+│   ├── _app.tsx
+│   ├── dashboard.tsx
+│   ├── debug
+│   │   ├── replays.tsx
+│   │   ├── usage.tsx
+│   │   └── users.tsx
+│   ├── index.tsx
+│   ├── login.tsx
+│   ├── not-authorized.tsx
+│   ├── public
+│   │   └── [replayId].tsx
+│   ├── replays
+│   │   ├── access
+│   │   │   └── [codeInt].tsx
+│   │   ├── access.tsx
+│   │   ├── index.tsx
+│   │   ├── lookup.tsx
+│   │   ├── new.tsx
+│   │   ├── [replayId]
+│   │   │   ├── access.tsx
+│   │   │   ├── edit.tsx
+│   │   │   ├── index.tsx
+│   │   │   ├── recordings.tsx
+│   │   │   ├── upload.tsx
+│   │   │   └── usage.tsx
+│   │   ├── success.tsx
+│   │   └── usage.tsx
+│   └── usage.tsx
 ├── prisma
+│   ├── db-backup.sql
+│   ├── dev.db
+│   ├── migrations
+│   │   ├── 20250715222956_add_usage_transcription_fields
+│   │   │   └── migration.sql
+│   │   ├── 20250721214325_make_replay_id_unique
+│   │   │   └── migration.sql
+│   │   ├── 20250724211421_add_company_to_replay
+│   │   │   └── migration.sql
+│   │   ├── 20250725142635_add_prompt_flags
+│   │   │   └── migration.sql
+│   │   ├── 20250725144650_add_recording_relation
+│   │   │   └── migration.sql
+│   │   └── migration_lock.toml
+│   ├── schema.prisma
+│   ├── schema.prisma.bkup
+│   ├── seed.mts
+│   └── seed.ts
 ├── project-file-list.txt
 ├── project-tree.txt
 ├── public
+│   ├── audio
+│   │   ├── sample1.mp3
+│   │   └── sample2.mp3
+│   ├── favicon.ico
+│   ├── header1.png
+│   ├── header2.png
+│   ├── header.png
+│   ├── header-transparent.png
+│   ├── mpc-logo.png
+│   ├── prompts
+│   │   ├── company.wav
+│   │   ├── firstName.wav
+│   │   ├── lastName.wav
+│   │   └── phone.wav
+│   ├── recordings
+│   └── uploads
 ├── scripts
+│   ├── dbsetup.js
+│   ├── preview-layouts.js
+│   └── ts-prune.md
 ├── styles
+│   ├── EditReplay.module.css
+│   ├── Footer.module.css
+│   ├── globals.css
+│   ├── Layout.module.css
+│   ├── Login.module.css
+│   ├── ManageUsers.module.css
+│   ├── ReplayDetail.module.css
+│   ├── ReplaysList.module.css
+│   ├── Replays.module.css
+│   └── Usage.module.css
 ├── supabase
+│   ├── functions
+│   │   └── vercel-deploy-sync
+│   │       └── index.ts
+│   └── .temp
 ├── _tests_
+│   └── lib
+│       └── bcrypt.test.ts
 ├── tsconfig.json
 ├── tsconfig.tsbuildinfo
 ├── types
+│   ├── bcryptjs.d.ts
+│   ├── global.d.ts
+│   ├── next-auth.d.ts
+│   └── Replay.ts
 ├── utils
+│   └── supabase.ts
 ├── .vercel
+│   ├── project.json
+│   └── README.txt
+├── vercel.json
 └── .vscode
-
-19 directories, 15 files
-
-[pages]
-/home/replayadmin/twilio-replay/pages
-├── 404.tsx
-├── admin
-│   └── users.tsx
-├── api
-│   ├── admin
-│   │   └── users.ts
-│   ├── auth
-│   │   └── [...nextauth].ts
-│   ├── cron.ts
-│   ├── prompts
-│   │   ├── audiofiles.ts
-│   │   └── upload.ts
-│   ├── replays
-│   │   ├── index.ts
-│   │   ├── lookup-code.ts
-│   │   ├── [replayId]
-│   │   │   ├── access.ts
-│   │   │   ├── index.ts
-│   │   │   ├── prompts.ts
-│   │   │   ├── recordings
-│   │   │   │   └── [recId].ts
-│   │   │   ├── recordings.ts
-│   │   │   ├── upload.ts
-│   │   │   └── usage
-│   │   │       └── export.ts
-│   │   ├── [replayId].ts
-│   │   └── usage.ts
-│   ├── upload-replay.ts
-│   ├── usage.ts
-│   ├── users
-│   │   ├── create.ts
-│   │   ├── index.ts
-│   │   ├── list.ts
-│   │   ├── [replayId]
-│   │   │   └── suspend.ts
-│   │   ├── reset-password.ts
-│   │   └── toggle-status.ts
-│   ├── voice
-│   └── webhook
-│       ├── collect-participant.ts
-│       ├── create-replay.ts
-│       ├── play-replay.ts
-│       ├── record-company.ts
-│       ├── record-conference.ts
-│       ├── recording-complete.ts
-│       ├── record-last-name.ts
-│       ├── record-phone.ts
-│       ├── record-prompt.ts
-│       ├── start-replay.ts
-│       ├── store-recording.ts
-│       └── upload-replay.ts
-├── _app.tsx
-├── dashboard.tsx
-├── index.tsx
-├── login.tsx
-├── not-authorized.tsx
-├── public
-│   └── [replayId].tsx
-├── replays
-│   ├── access
-│   │   └── [codeInt].tsx
-│   ├── access.tsx
-│   ├── index.tsx
-│   ├── lookup.tsx
-│   ├── new.tsx
-│   ├── [replayId]
-│   │   ├── access.tsx
-│   │   ├── index.tsx
-│   │   ├── prompts.tsx
-│   │   ├── recordings.tsx
-│   │   ├── upload.tsx
-│   │   └── usage.tsx
-│   ├── success.tsx
-│   └── usage.tsx
-└── usage.tsx
-
-18 directories, 58 files
-
-[components]
-/home/replayadmin/twilio-replay/components
-├── admin
-│   └── ReplayDetails.tsx
-├── Footer.tsx
-├── Layout.tsx
-├── replays
-│   ├── ReplayPromptsFormPage.tsx
-│   └── ReplayPromptsForm.tsx
-├── ReplaysHome.tsx
-├── RequireAuth.tsx
-├── UploadReplayForm.tsx
-├── UploadReplayRecording.tsx
-└── UserHeader.tsx
-
-3 directories, 10 files
-
-[prisma]
-/home/replayadmin/twilio-replay/prisma
-├── db-backup.sql
-├── dev.db
-├── migrations
-│   ├── 20250715222956_add_usage_transcription_fields
-│   │   └── migration.sql
-│   ├── 20250721214325_make_replay_id_unique
-│   │   └── migration.sql
-│   └── migration_lock.toml
-├── schema.prisma
-└── seed.ts
-
-4 directories, 7 files
-
-[lib]
-/home/replayadmin/twilio-replay/lib
-├── auth.ts
-├── bcrypt.ts
-├── prisma.ts
-├── validate-env.ts
-└── withAuth.tsx
-
-1 directory, 5 files
-
-[public]
-/home/replayadmin/twilio-replay/public
-├── audio
-│   ├── sample1.mp3
-│   └── sample2.mp3
-├── favicon.ico
-├── header1.png
-├── header2.png
-├── header.png
-├── header-transparent.png
-├── mpc-logo.png
-├── prompts
-│   ├── company.wav
-│   ├── firstName.wav
-│   ├── lastName.wav
-│   └── phone.wav
-├── recordings
-└── uploads
-
-5 directories, 12 files
-
-[styles]
-/home/replayadmin/twilio-replay/styles
-├── EditReplay.module.css
-├── Footer.module.css
-├── globals.css
-├── Layout.module.css
-├── Login.module.css
-├── ManageUsers.module.css
-├── ReplayDetail.module.css
-├── Replays.module.css
-└── Usage.module.css
-
-1 directory, 9 files
-
-[types]
-/home/replayadmin/twilio-replay/types
-├── bcryptjs.d.ts
-├── global.d.ts
-├── next-auth.d.ts
-└── Replay.ts
-
-1 directory, 4 files
-
-[utils]
-/home/replayadmin/twilio-replay/utils
-└── supabase.ts
-
-1 directory, 1 file
+    ├── extensions.json
+    └── settings.json
