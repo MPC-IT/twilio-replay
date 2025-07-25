@@ -1,11 +1,11 @@
-import * as bcrypt from 'bcryptjs'
+import * as bcrypt from 'bcryptjs';
 
 const SALT_ROUNDS = 10;
 
-export function hashPassword(password: string): Promise<string> {
+export function hashPassword(password: string | undefined): Promise<string> {
   return new Promise((resolve, reject) => {
-    if (!password) {
-      return reject(new Error('Password is required'));
+    if (typeof password !== 'string') {
+      return reject(new Error('Invalid password input'));
     }
 
     bcrypt.hash(password, SALT_ROUNDS, (err, hash) => {
