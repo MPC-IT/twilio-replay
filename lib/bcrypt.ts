@@ -2,9 +2,9 @@ import * as bcrypt from 'bcryptjs';
 
 const SALT_ROUNDS = 10;
 
-export function hashPassword(password: string | undefined): Promise<string> {
+export function hashPassword(password: unknown): Promise<string> {
   return new Promise((resolve, reject) => {
-    if (typeof password !== 'string') {
+    if (typeof password !== 'string' || password.length === 0) {
       return reject(new Error('Invalid password input'));
     }
 
